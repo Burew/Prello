@@ -1,14 +1,17 @@
 body{
+	
   overflow: scroll;
 	white-space: nowrap;
 	margin: 0;
+	margin-top: 50px;
   
 }
 
 #nav-bar{
-  display: fixed;
+  position: fixed;
   top: 0;
   left: 0;
+  width: 100%;
   padding: 10px 0;
   margin: 0;
   list-style-type: none;
@@ -17,7 +20,7 @@ body{
 
 #nav-bar li{
 	display: inline;
-
+	height: 100%;
 }
 
 #nav-bar li a{
@@ -27,30 +30,44 @@ body{
   padding: 14px 16px;
 }
 
-#nav-bar li a:hover {
-    background-color: #000080;
-}
-
 #nav-bar li:last-child {
-    float: right;
+    position: absolute;
+	right: 0;	
 }
 
-ul, ol{
+ul{
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
-	overflow: hidden;
 }
 
-#outer-list li{
-    
+.outer-list li{
+	background-color: #f0f0f0;
     display: inline-block;
     width: 100px;
     border-radius: 8px;
     margin: 0 5px;
 }
 
-#outer-list li:first-child{
-    margin-left: 0;
+.outer-list{
+	position: initial;
 }
+
+.outer-list > li:first-child{
+	margin-left: 0;
+}
+
+.inner-list li{
+	display: block;
+}
+
+.card {
+	max-width: 40%;
+	margin-left: 30%;
+	white-space: initial;
+}
+
+
+
+
 
