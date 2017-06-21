@@ -4,44 +4,108 @@
 		<meta charset="UTF-8">
 		<title>title</title>
 		<link rel="stylesheet" href="singleBoardStylesheet.css" type="text/css">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	</head>
 	<body>
 	
 		
-		<ul id = "nav-bar">
-			<li><a href="#">Boards</a></li>
-			<li><a href="#">Trello</a></li>
-			<li><a href="#">Options</a></li>
-		</ul>
+		<div id = "nav-bar" class="justify-div-content">
+			<div id="boards-button"><a href="#">Boards</a></div>
+			<div><a href="#">Trello</a></div>
+			<div id="options-button"><a href="#">Options</a></div>
+		</div>
+		
+		<div id="board" class="sidebar-left"> <!--Board sidebar-->
+			 <form action="">
+				<input type="search" name="search" placeholder="Find boards:">
+			</form> 
+			<br>
+			Recent Boards:
+			<br>
+			<ul class = "board-list">
+				<li><a href="#">Bread Board</a></li>
+				<li><a href="#">Surf Board</a></li>
+				<li><a href="#">Create a new board</a></li>
+			</ul>
+		</div>
+		
+		<div id="options" class="sidebar-right"><!--Options and settings sidebar-->
+			Bob Dole Jr.
+			<hr>
+			<div><a href="#">Profile</a></div>
+			<div><a href="#">Cards</a></div>
+			<div><a href="#">Settings</a></div>
+			<hr>
+			<div><a href="#">Help</a></div>
+			<div><a href="#">Shortcuts</a></div>
+			<div><a href="#">Change Language...</a></div>
+			<hr>
+			<div><a href="#">Log Out</a></div>
+		</div>
 		
 		<ul class="outer-list">
 			<li>
-				
 				<ul class="inner-list">
-					<li>Task A1</li>
-					<li>Task A2</li>
-					<li>Task A3</li>
-					<li>Task A4</li>
+					<li><a href="">Task A1</a></li>
+					<li><a href="">Task A2</a></li>
+					<li><a href="">Task A3</a></li>
+					<li><a href="">Task A4</a></li>
+					<li><a href="">Add Card</a></li>
 				</ul>
 			</li>
-			<li>Board 2</li>
-			<li>Board 3</li>
-			<li>Board 4</li>
-			<li>Board 5</li>
+			<li>
+				<ul class="inner-list">
+				  <li><a href="">Task B1</a></li>
+				  <li><a href="">Task B2</a></li>
+				  <li><a href="">Add Card</a></li>
+				</ul>
+			</li>
+			<li>
+				<ul class="inner-list">
+				  <li><a href="">Task C1</a></li>
+				  <li><a href="">Add Card</a></li>
+				</ul>
+			</li>
+			<li>
+				<ul class="inner-list">
+				  <li><a href="">Add a board</a></li>
+				</ul>
+			</li>
 		</ul>
-		
+				
 		<hr>
-		
 		<div class = "card">
-			<h1>Card Name</h1>
-			<h2>Users</h2> <h2>Labels</h2>
-			<h2>Description</h2>
+			<h2>Recreate the Trello Website</h2>
+			<div class="justify-div-content">
+				<div>
+				  <h3>Users:</h3>
+				  <i class="material-icons">account_box</i>
+				  <i class="material-icons">account_box</i>
+				  <i class="material-icons">add_box</i>
+				</div>
+				<div>
+				  <h3>Labels:</h3>
+				  <div class="label lightblue">Important</div>
+				  <div class="label pink">Testing</div>
+				  <div class="label">Add Tag</div>
+				</div>
+				<div></div> <!--Empty div needed for justify-->
+			</div>
+			
+			<h3>Description</h3>
 			<p>	Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
 				Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
 				It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. 
 				It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 			</p>
-			<h2>Comments</h2>
+			
+			<h2><i class="material-icons">chat_bubble_outline</i><span>Comments</span></h2>
+			  <form action="/action_page.php">
+				<textarea name="message" rows="3" cols="30">Enter your comment</textarea>
+				<br>
+				<input type="submit" value="Submit">
+			  </form> 
+       
 		</div>
 		
 	</body>

@@ -38,7 +38,7 @@ h1{
 	border: 1px solid white;
 	background-color: #228B22;
 	padding: 14px 16px;
-	margin: 0 20px;
+	margin: 10px 20px;
 }
 
 .board-list li a{
@@ -52,6 +52,14 @@ h1{
     background-color: #C0C0C0;
 }
 
+.sidebar-left{
+	width: 30%;
+}
+
+.sidebar-right{
+	width: 30%;
+	margin-left: 70%;
+}
 
 
 
