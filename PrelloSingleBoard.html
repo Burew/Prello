@@ -2,45 +2,44 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>title</title>
+		<title>Prello Single Board</title>
 		<link rel="stylesheet" href="singleBoardStylesheet.css" type="text/css">
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	</head>
 	<body>
-	
-		
+			
 		<div id = "nav-bar" class="justify-div-content">
-			<div id="boards-button"><a href="#">Boards</a></div>
+			<div id="boards-button"><a href="#">Boards</a>
+				<div id="board"> <!--Board sidebar-->
+					 <form action="">
+						<input type="search" name="search" placeholder="Find boards:">
+					</form> 
+					<br>
+					Recent Boards:
+					<br>
+					<ul class = "board-list">
+						<li><a href="#">Bread Board</a></li>
+						<li><a href="#">Surf Board</a></li>
+						<li><a href="#">Create a new board</a></li>
+					</ul>
+				</div>
+			</div>
 			<div><a href="#">Trello</a></div>
-			<div id="options-button"><a href="#">Options</a></div>
-		</div>
-		
-		<div id="board" class="sidebar-left"> <!--Board sidebar-->
-			 <form action="">
-				<input type="search" name="search" placeholder="Find boards:">
-			</form> 
-			<br>
-			Recent Boards:
-			<br>
-			<ul class = "board-list">
-				<li><a href="#">Bread Board</a></li>
-				<li><a href="#">Surf Board</a></li>
-				<li><a href="#">Create a new board</a></li>
-			</ul>
-		</div>
-		
-		<div id="options" class="sidebar-right"><!--Options and settings sidebar-->
-			Bob Dole Jr.
-			<hr>
-			<div><a href="#">Profile</a></div>
-			<div><a href="#">Cards</a></div>
-			<div><a href="#">Settings</a></div>
-			<hr>
-			<div><a href="#">Help</a></div>
-			<div><a href="#">Shortcuts</a></div>
-			<div><a href="#">Change Language...</a></div>
-			<hr>
-			<div><a href="#">Log Out</a></div>
+			<div id="options-button"><a href="#">Options</a>
+				<div id="options"><!--Options and settings sidebar-->
+					Bob Dole Jr.
+					<hr>
+					<div><a href="#">Profile</a></div>
+					<div><a href="#">Cards</a></div>
+					<div><a href="#">Settings</a></div>
+					<hr>
+					<div><a href="#">Help</a></div>
+					<div><a href="#">Shortcuts</a></div>
+					<div><a href="#">Change Language...</a></div>
+					<hr>
+					<div><a href="#">Log Out</a></div>
+				</div>
+			</div>
 		</div>
 		
 		<ul class="outer-list">
@@ -50,20 +49,20 @@
 					<li><a href="">Task A2</a></li>
 					<li><a href="">Task A3</a></li>
 					<li><a href="">Task A4</a></li>
-					<li><a href="">Add Card</a></li>
+					<li><a href="" class="add-card" id="add-card-first">Add Card</a></li>
 				</ul>
 			</li>
 			<li>
 				<ul class="inner-list">
 				  <li><a href="">Task B1</a></li>
 				  <li><a href="">Task B2</a></li>
-				  <li><a href="">Add Card</a></li>
+				  <li><a href="" class="add-card">Add Card</a></li>
 				</ul>
 			</li>
 			<li>
 				<ul class="inner-list">
 				  <li><a href="">Task C1</a></li>
-				  <li><a href="">Add Card</a></li>
+				  <li><a href="" class="add-card">Add Card</a></li>
 				</ul>
 			</li>
 			<li>
@@ -74,39 +73,94 @@
 		</ul>
 				
 		<hr>
-		<div class = "card">
+<div class = "card">
+			<div class="card-content">
 			<h2>Recreate the Trello Website</h2>
-			<div class="justify-div-content">
-				<div>
-				  <h3>Users:</h3>
-				  <i class="material-icons">account_box</i>
-				  <i class="material-icons">account_box</i>
-				  <i class="material-icons">add_box</i>
-				</div>
-				<div>
-				  <h3>Labels:</h3>
-				  <div class="label lightblue">Important</div>
-				  <div class="label pink">Testing</div>
-				  <div class="label">Add Tag</div>
-				</div>
-				<div></div> <!--Empty div needed for justify-->
-			</div>
 			
-			<h3>Description</h3>
-			<p>	Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-				Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-				It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. 
-				It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-			</p>
+			<div class="user-and-label">
+			  <h3>Users:</h3>
+        <i class="material-icons">account_box</i>
+			  <i class="material-icons">account_box</i>
+			  <i class="material-icons">add_box</i>
+			</div>
+			<div class="user-and-label">
+			  <h3>Labels:</h3>
+			  <div class="label lightblue">Important</div>
+			  <div class="label">Add Tag</div>
+			</div>
+				
+			<div id ="card-description">
+				<h3>Description</h3>
+				<p>	Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+					Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
+				</p>
+			</div>
 			
 			<h2><i class="material-icons">chat_bubble_outline</i><span>Comments</span></h2>
 			  <form action="/action_page.php">
-				<textarea name="message" rows="3" cols="30">Enter your comment</textarea>
+				<textarea name="comment" rows="3" cols="30">Enter your comment</textarea>
 				<br>
 				<input type="submit" value="Submit">
 			  </form> 
-       
-		</div>
+			</div>
+			<div class="card-sidebar">
+				<b>Add</b>
+				<ul>
+					<li><button type="button">Members</button></li>
+					<li><button type="button">Labels</button></li>
+					<li><button type="button">Checklist</button></li>
+					<li><button type="button">Due Date</button></li>
+					<li><button type="button">Attachment</button></li>
+				</ul>				
+				<b>Actions</b>
+				<ul>
+          <li><button type="button">Move</button></li>
+          <li><button type="button">Copy</button></li>
+          <li><button type="button">Subscribe</button></li>
+					<hr>
+          <li><button type="button">Archive</button></li>
+				</ul>
+				<br>
+				<a href="">Share and more...</a>
+			</div>
+		</div><!--end card-->
 		
+		
+		<!--empty card-->
+		<div id="myModal" class="modal">
+			<!-- Modal content -->
+			<div class="modal-content">
+				<div id="empty-card" class = "card">
+					<form action="/action_page.php">
+						<span class="close">&times;</span>
+						<input type="text" name="fname" placeholder="Insert a new title">
+						
+						<div class="user-and-label">
+						  <h3>Users:</h3>
+						  <i class="material-icons">add_box</i>
+						</div>
+						<div class="user-and-label">
+						  <h3>Labels:</h3>
+						  <div class="label">Add Tag</div>
+						</div>
+						<br>
+						<div class ="card-description">
+							<h3>Description</h3>	
+							<textarea name="comment" rows="3" cols="30" placeholder="Add a description"></textarea>
+						</div>
+						
+						<h2><i class="material-icons">chat_bubble_outline</i><span>Comments</span></h2>
+						  
+						<textarea name="comment" rows="3" cols="30" placeholder="Enter your comment"></textarea>
+						<br>
+						
+						<input type="submit" value="Add Card">
+					</form> 
+				</div>
+			</div>
+		</div>	
+		<!--end modal-->
+	
+		<script src="PrelloAddCard.js"></script> 
 	</body>
 </html>

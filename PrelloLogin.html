@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>title</title>
+		<title>Prello Login</title>
 		<link rel="stylesheet" href="stylesheet.css" type="text/css">
 	</head>
 	<body>
@@ -10,15 +10,15 @@
 		<div class = "form-center">
 			<h1>Create an account</h1>
 			<hr>
-			<form>
+			<form id="create-account-form">
 				Username: <br>
-				<input type="text" name="username"><br>
+				<input type="text" id="create-user" name="username" required><br>
 				Email: <br>
-				<input type="email" name="email"><br>
+				<input type="email" id="create-email" name="email" required><br>
 				Password: <br>
-				<input type="password" name="password"><br>
+				<input type="password" id="create-password" name="password" required><br>
 				Confirm Password: <br>
-				<input type="password" name="confirmpassword"><br>
+				<input type="password" id="create-confirm-password" name="confirmpassword" required><br>
 				<input type="submit" value="Submit">
 			</form>
 		</div>
@@ -26,16 +26,16 @@
 		<div class = "form-center">
 			<h1>Login</h1>
 			<hr>
-			<form>
+			<form id="login-form">
 				Username: <br>
-				<input type="text" name="username"><br>
+				<input type="text" id="login-user" name="username" required><br>
 				Password: <br>
-				<input type="password" name="password"><br>
+				<input type="password" id="login-password" name="password" required><br>
 				Confirm Password: <br>
-				<input type="password" name="confirmpassword"><br>
+				<input type="password" id="login-confirm-password" name="confirmpassword" required><br>
 				<input type="submit" value="Submit">
 			</form>
 		</div>
-		
+	<script src="PrelloLogin.js"></script> 
 	</body>
 </html>
