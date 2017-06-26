@@ -5,11 +5,16 @@
 		<title>Prello Single Board</title>
 		<link rel="stylesheet" href="singleBoardStylesheet.css" type="text/css">
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<script
+			  src="https://code.jquery.com/jquery-3.2.1.min.js"
+			  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+			  crossorigin="anonymous"></script>
 	</head>
 	<body>
 			
 		<div id = "nav-bar" class="justify-div-content">
-			<div id="boards-button"><a href="#">Boards</a>
+			<div id="boards-button">
+				<a href="#">Boards</a>
 				<div id="board"> <!--Board sidebar-->
 					 <form action="">
 						<input type="search" name="search" placeholder="Find boards:">
@@ -25,7 +30,8 @@
 				</div>
 			</div>
 			<div><a href="#">Trello</a></div>
-			<div id="options-button"><a href="#">Options</a>
+			<div id="options-button">
+				<a href="#">Options</a>
 				<div id="options"><!--Options and settings sidebar-->
 					Bob Dole Jr.
 					<hr>
@@ -42,40 +48,57 @@
 			</div>
 		</div>
 		
+		<!--List of cards-->
 		<ul class="outer-list">
 			<li>
 				<ul class="inner-list">
-					<li><a href="">Task A1</a></li>
-					<li><a href="">Task A2</a></li>
-					<li><a href="">Task A3</a></li>
-					<li><a href="">Task A4</a></li>
-					<li><a href="" class="add-card" id="add-card-first">Add Card</a></li>
+					<li><div>List 1 <span class='close close-list'>&times;</span></div></li>
+					<li><button type='button'>Card A1</button></li>
+					<li><button type='button'>Card A2</button></li>
+					<li><button type='button'>Card A3</button></li>
+					<li><button type='button'>Card A4</button></li>
+					<li><button type='button' class="add-card-button">Add a card</button></li>
 				</ul>
 			</li>
 			<li>
 				<ul class="inner-list">
-				  <li><a href="">Task B1</a></li>
-				  <li><a href="">Task B2</a></li>
-				  <li><a href="" class="add-card">Add Card</a></li>
+					<li><div>List 2 <span class='close close-list'>&times;</span></div></li>
+					<li><button type='button'>Card B1</button></li>
+					<li><button type='button'>Card B2</button></li>
+					<li><button type='button' class="add-card-button">Add a card</button></li>
 				</ul>
 			</li>
 			<li>
 				<ul class="inner-list">
-				  <li><a href="">Task C1</a></li>
-				  <li><a href="" class="add-card">Add Card</a></li>
+					<li><div>List 3 <span class='close close-list'>&times;</span></div></li>
+					<li><button type='button'>Card C1</button></li>
+					<li><button type='button' class="add-card-button">Add a card</button></li>
 				</ul>
 			</li>
 			<li>
 				<ul class="inner-list">
-				  <li><a href="">Add a board</a></li>
+					<li id="add-list">
+						<div id="add-list-message">Add a list
+						</div>
+						<div>
+							<form id="add-list-form">
+							  <input type="text" name="listName" placeholder="Add a list..." required>
+							  <hr>
+							  <input type="submit" value="Save">
+							  <span id="close-add-list" class="close">&times;</span>
+							</form>
+						</div>
+					</li>
 				</ul>
 			</li>
 		</ul>
 				
 		<hr>
-<div class = "card">
+		
+		<!--Dummy card at bottom-->
+		<div class = "card" id="dummy-card">
 			<div class="card-content">
-			<h2>Recreate the Trello Website</h2>
+			<h3>Recreate the Trello Website</h3>
 			
 			<div class="user-and-label">
 			  <h3>Users:</h3>
@@ -85,8 +108,9 @@
 			</div>
 			<div class="user-and-label">
 			  <h3>Labels:</h3>
-			  <div class="label lightblue">Important</div>
-			  <div class="label">Add Tag</div>
+					<button type="button">Members</button>
+					<button type="button">Labels</button>
+          <i class="material-icons">add_box</i>
 			</div>
 				
 			<div id ="card-description">
@@ -98,7 +122,7 @@
 			
 			<h2><i class="material-icons">chat_bubble_outline</i><span>Comments</span></h2>
 			  <form action="/action_page.php">
-				<textarea name="comment" rows="3" cols="30">Enter your comment</textarea>
+				<textarea name="comment" rows="3" cols="28">Enter your comment</textarea>
 				<br>
 				<input type="submit" value="Submit">
 			  </form> 
@@ -111,6 +135,7 @@
 					<li><button type="button">Checklist</button></li>
 					<li><button type="button">Due Date</button></li>
 					<li><button type="button">Attachment</button></li>
+					
 				</ul>				
 				<b>Actions</b>
 				<ul>
@@ -126,14 +151,15 @@
 		</div><!--end card-->
 		
 		
+		
 		<!--empty card-->
 		<div id="myModal" class="modal">
 			<!-- Modal content -->
 			<div class="modal-content">
 				<div id="empty-card" class = "card">
-					<form action="/action_page.php">
-						<span class="close">&times;</span>
-						<input type="text" name="fname" placeholder="Insert a new title">
+					<form id="new-card-form">
+						<span class="close close-modal">&times;</span>
+						<input type="text" name="title" placeholder="Insert a new title" required>
 						
 						<div class="user-and-label">
 						  <h3>Users:</h3>
@@ -143,14 +169,12 @@
 						  <h3>Labels:</h3>
 						  <div class="label">Add Tag</div>
 						</div>
-						<br>
+						<div style="clear:both;"></div> <!-- used to separate the user/label and description -->
 						<div class ="card-description">
 							<h3>Description</h3>	
-							<textarea name="comment" rows="3" cols="30" placeholder="Add a description"></textarea>
+							<textarea name="description" rows="3" cols="30" placeholder="Add a description"></textarea>
 						</div>
-						
 						<h2><i class="material-icons">chat_bubble_outline</i><span>Comments</span></h2>
-						  
 						<textarea name="comment" rows="3" cols="30" placeholder="Enter your comment"></textarea>
 						<br>
 						
@@ -160,7 +184,10 @@
 			</div>
 		</div>	
 		<!--end modal-->
+		
+		
 	
-		<script src="PrelloAddCard.js"></script> 
+		<script src="PrelloManageCard.js"></script>
+		<script src="PrelloManageList.js"></script> 		
 	</body>
 </html>
