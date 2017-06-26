@@ -181,6 +181,7 @@ ul{
 }
 
 #options{
+	display: none;
 	color: black;
 	position: fixed;
 	top: 50px;
@@ -189,6 +190,7 @@ ul{
 }
 
 #board{
+	display: none;
 	color: black;
 	position: fixed;
 	top: 50px;
@@ -196,6 +198,8 @@ ul{
 	z-index: 1;
 }
 
+/*Replaced in PrelloNavBar.js*/
+/*
 #options-button:hover #options{
 	display: block;
 }
@@ -203,6 +207,7 @@ ul{
 #boards-button:hover #board{ 
 	display: block;
 }
+*/
 
 
 

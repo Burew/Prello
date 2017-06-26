@@ -50,9 +50,9 @@
 		
 		<!--List of cards-->
 		<ul class="outer-list">
-			<li>
+<!-- 			<li>
+				<div>List 1 <span class='close close-list'>&times;</span></div>
 				<ul class="inner-list">
-					<li><div>List 1 <span class='close close-list'>&times;</span></div></li>
 					<li><button type='button'>Card A1</button></li>
 					<li><button type='button'>Card A2</button></li>
 					<li><button type='button'>Card A3</button></li>
@@ -61,36 +61,33 @@
 				</ul>
 			</li>
 			<li>
+				<div>List 2 <span class='close close-list'>&times;</span></div>
 				<ul class="inner-list">
-					<li><div>List 2 <span class='close close-list'>&times;</span></div></li>
 					<li><button type='button'>Card B1</button></li>
 					<li><button type='button'>Card B2</button></li>
 					<li><button type='button' class="add-card-button">Add a card</button></li>
 				</ul>
 			</li>
 			<li>
+				<div>List 3 <span class='close close-list'>&times;</span></div>
 				<ul class="inner-list">
-					<li><div>List 3 <span class='close close-list'>&times;</span></div></li>
 					<li><button type='button'>Card C1</button></li>
 					<li><button type='button' class="add-card-button">Add a card</button></li>
 				</ul>
 			</li>
 			<li>
+				<div id="add-list-message">Add a list</div>
 				<ul class="inner-list">
-					<li id="add-list">
-						<div id="add-list-message">Add a list
-						</div>
-						<div>
-							<form id="add-list-form">
-							  <input type="text" name="listName" placeholder="Add a list..." required>
-							  <hr>
-							  <input type="submit" value="Save">
-							  <span id="close-add-list" class="close">&times;</span>
-							</form>
-						</div>
+					<li>
+						<form id="add-list-form">
+						  <input type="text" name="listName" placeholder="Add a list..." required>
+						  <hr>
+						  <input type="submit" value="Save">
+						  <span id="close-add-list" class="close">&times;</span>
+						</form>
 					</li>
 				</ul>
-			</li>
+			</li> -->
 		</ul>
 				
 		<hr>
@@ -135,7 +132,6 @@
 					<li><button type="button">Checklist</button></li>
 					<li><button type="button">Due Date</button></li>
 					<li><button type="button">Attachment</button></li>
-					
 				</ul>				
 				<b>Actions</b>
 				<ul>
@@ -186,8 +182,9 @@
 		<!--end modal-->
 		
 		
-	
+		<script src="PrelloLoadCards.js"></script>
 		<script src="PrelloManageCard.js"></script>
-		<script src="PrelloManageList.js"></script> 		
+		<script src="PrelloManageList.js"></script>
+		<script src="PrelloNavBar.js"></script> 		
 	</body>
 </html>
