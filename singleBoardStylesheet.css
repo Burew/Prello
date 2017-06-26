@@ -325,9 +325,16 @@ ul{
 	display: none;
 }
 
-#close-add-list{
-	
+#add-labels{
+	display: none;
+	width: 40%;
+	z-index: 1;
 }
+
+.label-select{
+	width: 100%:
+}
+
 
 
 
