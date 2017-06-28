@@ -89,6 +89,10 @@ body{
 	/*! height: 100%; */
 }
 
+#nav-bar div {
+  padding: 10px;
+}
+
 ul{
 	list-style-type: none;
 	margin: 0;
@@ -318,9 +322,6 @@ ul{
 	color: #000;
 }
 
-.close-card{
-}
-
 #add-list-form{
 	display: none;
 }
@@ -335,6 +336,9 @@ ul{
 	width: 100%:
 }
 
+#dummy-card{
+	display: none;
+}
 
 
 

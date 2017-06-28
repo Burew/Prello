@@ -1,57 +1,62 @@
-//build data structure
 /*
-{
-"_id": "595148e42c02dc6144f3d964",
-"title": "\"newList1\"",
-"key": "keung",
-"cards": [
-	{
-		"title": "List 1",
-		"cards": [
-			{
-				"description": "Card A1"
-			},
-			{
-				"description": "Card A2"
-			},
-			{
-				"description": "Card A3"
-			},
-			{
-				"description": "Card A4"
-			}
-		]
-	},
-	{
-		"title": "List 2",
-		"cards": [
-			{
-				"description": "Card B1"
-			},
-			{
-				"description": "Card B2"
-			},
-			{
-				"description": "Card B3"
-			}
-		]
-	},
-	{
-		"title": "List 3",
-		"cards": [
-			{
-				"description": "Card C1"
-			}
-		]
-	}
+[
+    {
+        "_id": "5951678cfa8c1e645708417c",
+        "key": "keung",
+        "cards": [
+            {
+                "_id": "595172512f51de67c344e360",
+                "description": "Card A1"
+            },
+            {
+                "_id": "595172522f51de67c344e361",
+                "description": "Card A2"
+            },
+            {
+                "_id": "595172532f51de67c344e362",
+                "description": "Card A3"
+            },
+            {
+                "_id": "595172542f51de67c344e363",
+                "description": "Card A4"
+            }
+        ],
+        "title": "List 1"
+    },
+    {
+        "_id": "595168cefa8c1e6457084182",
+        "key": "keung",
+        "cards": [
+            {
+                "_id": "595172bc2f51de67c344e369",
+                "description": "Card B1"
+            },
+            {
+                "_id": "595172bc2f51de67c344e36a",
+                "description": "Card B2"
+            }
+        ],
+        "title": "List 2"
+    },
+    {
+        "_id": "595169b3fa8c1e6457084189",
+        "key": "keung",
+        "cards": [
+            {
+                "_id": "5951731d2f51de67c344e36b",
+                "description": "Card C1"
+            }
+        ]
+    }
 ]
-}
 */
-var map = {}
+
 
 //populate w/ data
 var lol;
 var listCards;
+var map = {};
+
 $(function() {
 	
 	$.ajax({
@@ -62,54 +67,35 @@ $(function() {
 	dataType : "json", // The type of data we expect back
 	})
 	.done(function( json ){ //response is passed to this function
-	 listCards = json[0].cards;
+	 listCards = json;
 	
 	//do outer li in reverse order, to handle add-list
 	lol = $('.outer-list');
-	for(var i = listCards.length - 1; i >= 0; i--) {
+	for(var i = listCards.length - 1; i >= 0; i--){
 		var list = listCards[i];
+		var listIndex = i;
 		var listLi = $('<li/>');	//create a list
+			listLi.attr("data-list-id", list._id);
 		var titleDiv = $('<div/>').html(list.title + "<span class='close close-list'>&times;</span>");	//title for that list
 		var cardsUl = $('<ul/>').addClass('inner-list');	//cards for that list
 		
 		//create cards, add to listLi
 		for(var j = 0; j < list.cards.length; j++) {
 		  var card = list.cards[j];  
-		  var cardLi = $('<li/>');
-		  cardLi.append('<button>'+ card.description +'</button>');
+		  var cardIndex = j;
+		  var cardLi = $('<li/>').attr("data-card-id", card._id);
+		  map[card._id] = {listIndex, cardIndex}; //listIndex, cardIndex;
+		  cardLi.append('<button type="button">'+ card.description +'</button>');
 		  cardsUl.append(cardLi);
-    }
-	
-	//add-card-button (last)
-	cardsUl.append("<li><button type='button' class='add-card-button'>Add a card</button></li>");
-    
-    listLi.append(titleDiv, cardsUl);
-	
-    lol.prepend(listLi);
-    //lol.append(listLi);
-	//console.log(listLi);
-  }
+		}
+		
+		//add-card-button (last)
+		cardsUl.append("<li><button type='button' class='add-card-button'>Add a card</button></li>");
+		listLi.append(titleDiv, cardsUl);
+		lol.prepend(listLi);
+	}
   
-  //add-list 
-  /*
-  var listLi = $('<li/>');
-  var cardsUl = $('<ul/>').addClass('inner-list');
-  var cardLi = $("<li/>");
-  var cardForm = $("<form/>");
-  cardForm.attr("id", "add-list-form");
-  cardForm.append(
-	  '<input type="text" name="listName" placeholder="Add a list..." required>',
-	  "<hr>", 
-	  '<input type="submit" value="Save">', 
-	  '<span id="close-add-list" class="close">&times;</span>'
-  );
-  cardLi.append(cardForm);
-  cardsUl.append(cardLi);
-  listLi.append("<div id='add-list-message'>Add a list</div>").append(cardsUl);
-  lol.append(listLi);
-	
-	*/
-  }); // ajax done
+  }); //end ajax
   
   /*
   lol.on('click', '.del-btn', function(e) {

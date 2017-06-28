@@ -1,15 +1,18 @@
-$(function() {
-	var currentCard;
+var currentCard;
 
-	$(".outer-list").on("click", ".inner-list .add-card-button", function(event){
+$(function() {
+	
+	outerList = $(".outer-list");
+
+	outerList.on("click", ".inner-list .add-card-button", function(event){
 		$("#myModal").css("display","block");
 		currentCard = event.target;
-		console.log(currentCard);
 	});
 
 	// When the user clicks on <span> (x), close the modal
 	$(".close-modal").on("click", function(){
 		$("#myModal").css("display","none");
+		$("#new-card-form")[0].reset();
 	}); 
 
 	// When the user clicks anywhere outside of the modal, close it
@@ -17,35 +20,102 @@ $(function() {
 		var modal = $("#myModal");
 		if (event.target === modal[0]) {
 			modal.css("display","none");
+			$("#new-card-form")[0].reset();
 		}
 	}); 
 
+	//add a new card
 	$("#new-card-form").on("submit", function(event){
 		event.preventDefault();
+		
 		//get value
 		var card_title = $("#new-card-form input[name=title]").val();
 		
+		//get list 
+		var currentList = $(currentCard).parents(".outer-list > li");
+		var listID = currentList.attr("data-list-id"); 
+		var cardID;
+		var cards;
+		
+		//talk to server, get list first to find correct place to insert card
+		//post to create
+		var serverResponse;
+		
+		$.ajax({
+			url: "http://thiman.me:1337/keung/list/"+ listID +"/card",
+			data: {
+			},
+			type: "POST",	 		// Whether this is a POST or GET request
+			dataType : "json" 		// The type of data we expect back
+		}).done(function( json ){
+			serverResponse = json;
+			cards = serverResponse.cards;
+			cardID = cards[cards.length - 1]._id;
+			
+			console.log(serverResponse);
+			
+			//patch w/ cardID to change, add labels here later
+			$.ajax({
+				url: "http://thiman.me:1337/keung/list/"+ listID +"/card/" + cardID,
+				data: {
+					"_id": cardID,
+					"description": card_title},
+				type: "PATCH",	 		// Whether this is a POST or GET request
+				dataType : "json" 		// The type of data we expect back
+			});
+			
+			//add new indices to map
+			var i;
+			for ( i = 0; i < listCards.length; i++){
+				if (listCards[i]._id == listID){
+					break;
+				}
+			};
+			
+			map[cardID] = {listIndex:i, cardIndex:cards.length - 1};
+		});
+
 		//create new element, fill in data
 		var newLi = $("<li/>");
+		newLi.attr("595172bc2f51de67c344e36a", cardID);
 		newLi.html("<button type='button'>" + card_title +"</button>");
 		
 		//get current list and insert
-		var innerListLi = $(currentCard).parent(); 
+		var innerListLi = $(currentCard).parent();  //insert-card <li>
 		innerListLi.before(newLi);
 		
 		//reset form modal
-		span.click();	
+		$(".close-modal").click();		
 		$(this)[0].reset();
-		
 	});
 
+	
 	//remove card
-	$( ".outer-list" ).on( "click", ".inner-list button:not(.add-card-button)",function(event) {
-		var button = event.target;
+	outerList.on( "click", ".inner-list button:not(.add-card-button)",function(event) {
+		var currentButton = $(event.target);		
+		
+		var cardID = currentButton.parent().attr("data-card-id");
+		var listIndex = map[cardID].listIndex;
+		var cardIndex = map[cardID].cardIndex;
+		
+		$.ajax({
+			url: "http://thiman.me:1337/keung/list/"+ listCards[listIndex]._id +"/card/" + listCards[listIndex].cards[cardIndex]._id,
+			data: {
+			},
+			type: "DELETE",	 		// Whether this is a POST or GET request
+			dataType : "json", 		// The type of data we expect back
+		});
 		
 		//get parent, since the button was clicked and we want to remove the li (parent)
-		$(button.parentNode).remove(); 
+		currentButton.parent().remove(); 
 	});
+	
+	
+	// view or change card 
+	outerList.on( "click", ".inner-list button:not(.add-card-button)",function(event) {
+		
+	});
+	
 });
 
 
