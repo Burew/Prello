@@ -37,19 +37,32 @@
             }
         ],
         "title": "List 2"
-    },
-    {
-        "_id": "595169b3fa8c1e6457084189",
-        "key": "keung",
-        "cards": [
-            {
-                "_id": "5951731d2f51de67c344e36b",
-                "description": "Card C1"
-            }
-        ]
     }
 ]
 */
+
+
+function findListIndex(listID) {
+	for (var i = 0; i < listCards.length; i++){
+		if (listCards[i]._id == listID){
+			return i;
+		}
+	};	
+	return -1;
+};
+
+function printAll(){
+	listCards.forEach(printList);
+};
+
+function printList(list){
+	console.log("Title: " + list.title);
+	console.log("cards:");
+	list.cards.forEach(printCard);
+}
+function printCard(card){
+	console.log("     " + card.description);
+}
 
 
 //populate w/ data

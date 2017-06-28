@@ -18,6 +18,7 @@ $(function() {
 			dataType : "json", 		// The type of data we expect back
 		});
 		
+		listCards.splice(findListIndex(listID), 1);
 		$(removeThis).remove();
 	});
 		
@@ -59,11 +60,14 @@ $(function() {
 				},
 				type: "PATCH",	 		
 				dataType : "json"
+			}).done(function( json ){
+				//add to end of listCards
+				listCards[listCards.length] = json;
 			});
 		});
-		
-		newLi.html("<div>List 3<span class='close close-list'>×</span></div><ul class=inner-list><li><button class=add-card-button type=button>Add a card</button></ul>");	
+		newLi.html("<div>" + newListValue + "<span class='close close-list'>×</span></div><ul class=inner-list><li><button class=add-card-button type=button>Add a card</button></ul>");	
 		addListForm.parents(".outer-list > li").before(newLi);
+		
 		
 		//reset the form
 		closeAddList.click();
