@@ -10,14 +10,15 @@ $(function() {
 		var removeThis = $(event.target).parents(".outer-list > li");
 		var listID = $(removeThis).attr("data-list-id");
 		
+		//DELETE the current list associated w/ listID on server 		
 		$.ajax({
 			url: "http://thiman.me:1337/keung/list/"+ listID,
-			data: {
-			},
-			type: "DELETE",	 		// Whether this is a POST or GET request
-			dataType : "json", 		// The type of data we expect back
+			data: {},
+			type: "DELETE",	 
+			dataType : "json", 
 		});
 		
+		//delete list in data structure, and in HTML 
 		listCards.splice(findListIndex(listID), 1);
 		$(removeThis).remove();
 	});
@@ -36,34 +37,21 @@ $(function() {
 		event.preventDefault();
 		//create new node - new list item w/ stuff inside
 		var newLi = $("<li/>");
-		
+			
 		//get value of list
 		var newListValue = addListForm.children("input[name=listName]").val(); 
 		
-		//create new list in server
+		//create new list in server using POST 
 		$.ajax({
 			url: "http://thiman.me:1337/keung/list",
 			data: {
+				"title": newListValue
 			},
-			type: "POST",	 		// Whether this is a POST or GET request
-			dataType : "json" 		// The type of data we expect back
+			type: "POST",	 		
+			dataType : "json" 		
 		}).done(function( json ){
-			var listID = json._id;
-			
-			newLi.attr("data-list-id",listID );
-			
-			//patch w/ a title
-			$.ajax({
-				url: "http://thiman.me:1337/keung/list/" + listID,
-				data: {
-					"title": newListValue
-				},
-				type: "PATCH",	 		
-				dataType : "json"
-			}).done(function( json ){
-				//add to end of listCards
-				listCards[listCards.length] = json;
-			});
+			//assign new list to local data stucture using data returned by server
+			listCards[listCards.length] = json;
 		});
 		newLi.html("<div>" + newListValue + "<span class='close close-list'>×</span></div><ul class=inner-list><li><button class=add-card-button type=button>Add a card</button></ul>");	
 		addListForm.parents(".outer-list > li").before(newLi);

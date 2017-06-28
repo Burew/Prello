@@ -1,9 +1,7 @@
-var currentCard;
-
 $(function() {
+	var currentCard;
+	var outerList = $(".outer-list");
 	
-	outerList = $(".outer-list");
-
 	outerList.on("click", ".inner-list .add-card-button", function(event){
 		$("#myModal").css("display","block");
 		currentCard = event.target;
@@ -28,10 +26,10 @@ $(function() {
 	$("#new-card-form").on("submit", function(event){
 		event.preventDefault();
 		
-		//get value
+		//get value from list
 		var card_title = $("#new-card-form input[name=title]").val();
 		
-		//get list 
+		//get list element
 		var currentList = $(currentCard).parents(".outer-list > li");
 		var listID = currentList.attr("data-list-id"); 
 		var cardID;
@@ -44,8 +42,8 @@ $(function() {
 			url: "http://thiman.me:1337/keung/list/"+ listID +"/card",
 			data: {
 			},
-			type: "POST",	 		// Whether this is a POST or GET request
-			dataType : "json" 		// The type of data we expect back
+			type: "POST",	 		
+			dataType : "json" 		
 		}).done(function( json ){
 			serverResponse = json;
 			cards = serverResponse.cards;
@@ -57,15 +55,15 @@ $(function() {
 				data: {
 					"_id": cardID,
 					"description": card_title},
-				type: "PATCH",	 		// Whether this is a POST or GET request
-				dataType : "json" 		// The type of data we expect back
+				type: "PATCH",	 		
+				dataType : "json" 		
+			}).done(function( json ){
+				//update internal data structures with server response
+				var i = findListIndex(listID);			
+				listCards[i] = json;
+				map[cardID] = {listIndex:i, cardIndex:cards.length - 1};
 			});
 			
-			//update internal data structures;
-			var i = findListIndex(listID);			
-			listCards[i] = json;
-			map[cardID] = {listIndex:i, cardIndex:cards.length - 1};
-	
 			//create new element, fill in data
 			var newLi = $("<li/>");
 			newLi.attr("data-card-id", cardID);

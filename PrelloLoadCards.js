@@ -41,7 +41,7 @@
 ]
 */
 
-
+//debugging helper functions, call printAll() to see content of local data structures
 function findListIndex(listID) {
 	for (var i = 0; i < listCards.length; i++){
 		if (listCards[i]._id == listID){
