@@ -30,7 +30,7 @@ router.get('/', function(req, res) {
 
 router.post('/', function(req, res){	
 	var newList = new List(
-		{title: req.body.title}
+		req.body //{title: req.body.title}
 	);
 	newList.save(function(err, list){
 		if(err){
@@ -64,7 +64,7 @@ router.delete('/:listID', function(req, res) {
 		console.log(oldList);
 		oldList.remove();
 	});
-	req.send();
+	req.send(200); //status for HTTP ok
 });
 
 
@@ -79,11 +79,14 @@ router.post('/:listID/card', function(req, res){
 			return console.error(err);
 		
 		//add new empty card
-		oldList.cards.push({
-			title: "",
-			description: "",
-			labels: []
-		});
+		oldList.cards.push(
+			/*
+			title: req.body.title ||  "",
+			description: req.body.description || "",
+			labels: req.body.labels || []
+			*/
+			req.body	//change later if attr are needed
+		);
 		
 		oldList.save(function(err, list){
 			if(err){
@@ -96,10 +99,34 @@ router.post('/:listID/card', function(req, res){
 });
 
 router.patch('/:listID/card/:cardID', function(req, res) {
-	
+	List.findOne({ _id:  req.params.listID}, function (err, oldList) {
+		if (err) 
+			return console.error(err);
+		
+		Object.assign(oldList.cards.id(req.params.cardID), req.body);
+		oldList.save(function(err, list){
+			if(err){
+				console.log(err);
+			} else {
+				res.json(list);
+			}
+		});		
+	});
 });
 
 router.delete('/:listID/card/:cardID', function(req, res) {
+	List.findOne({ _id:  req.params.listID}, function (err, oldList) {
+		if (err) 
+			return console.error(err);
+		oldList.cards.id(req.params.cardID).remove();
+		oldList.save(function(err, list){
+			if(err){
+				console.log(err);
+			} else {
+				res.json(list);
+			}
+		});
+	});
 });
 
 
