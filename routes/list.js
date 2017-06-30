@@ -64,7 +64,7 @@ router.delete('/:listID', function(req, res) {
 		console.log(oldList);
 		oldList.remove();
 	});
-	req.send(200); //status for HTTP ok
+	res.send(""); //status for HTTP ok
 });
 
 
@@ -92,7 +92,7 @@ router.post('/:listID/card', function(req, res){
 			if(err){
 				console.log(err);
 			} else {
-				res.json(list.cards[list.cards.length - 1]);
+				res.json(list);
 			}
 		});
 	});
@@ -123,7 +123,7 @@ router.delete('/:listID/card/:cardID', function(req, res) {
 			if(err){
 				console.log(err);
 			} else {
-				res.json(list);
+				res.send("");
 			}
 		});
 	});
