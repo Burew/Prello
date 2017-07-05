@@ -64,6 +64,19 @@ function printCard(card){
 	console.log("     " + card.description);
 }
 
+function renderLabels(tempColors, displayLabelsDiv){
+	
+	//reset div value
+	displayLabelsDiv.html("");
+
+	//generate items
+	for (var i =0; i < tempColors.length; i++){
+		var newDiv = $("<div/>");
+		newDiv.addClass("display-labels").css("background-color", tempColors[i]);
+		displayLabelsDiv.append(newDiv);
+	}
+}
+
 
 //populate w/ data
 var lol;
@@ -73,7 +86,8 @@ var map = {};
 $(function() {
 	
 	$.ajax({
-	url: "http://thiman.me:1337/keung/list",
+	//url: "http://thiman.me:1337/keung/list",
+	url: "http://localhost:3000/list/",
 	data: {
 	},
 	type: "GET",	 // Whether this is a POST or GET request
@@ -97,6 +111,12 @@ $(function() {
 		  var card = list.cards[j];  
 		  var cardIndex = j;
 		  var cardLi = $('<li/>').attr("data-card-id", card._id);
+		  
+		  //render labels
+		  var displayLabelsDiv = $('<div/>').addClass("display-labels-div");
+		  renderLabels(card.labels, displayLabelsDiv);
+		  cardLi.append(displayLabelsDiv); 
+		  
 		  map[card._id] = {listIndex, cardIndex}; //listIndex, cardIndex;
 		  cardLi.append('<button type="button">'+ card.description +'</button>');
 		  cardsUl.append(cardLi);
@@ -110,18 +130,4 @@ $(function() {
   
   }); //end ajax
   
-  /*
-  lol.on('click', '.del-btn', function(e) {
-    var cardId = $(this).attr('data-cardid');
-    var cardMap = map[cardId];
-    
-    listCards[cardMap.listIndex].cards.splice(cardMap.cardIndex, 1);  	//update model
-    // lol.find('li#{cardId}').remove();								//remove from view
-    $(this).parent().remove();
-    // Update map
-    console.log(listCards);
-  });
-    
-  console.log(map);
-  */
 });

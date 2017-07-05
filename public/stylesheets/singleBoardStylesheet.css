@@ -125,6 +125,7 @@ ul{
 
 .inner-list {
     width: 100%;    
+	white-space: normal;
 }
 
 .inner-list li{
@@ -217,18 +218,20 @@ ul{
 
 
 .user-and-label{
+	position: relative;
 	float: left;
 	margin-right: 15px;
 	margin-bottom: 15px;
 }
 
-.user-and-label h3{
+.user-and-label > h3{
   margin-top: 0; 
 }
 
 .card {
-	max-width: 50%;
-	margin-left: 25%;
+	/* max-width: 50%; */
+	/* margin-left: 25%; */
+	position: relative;
 	padding: 10px 10px;
 	white-space: initial;
 	border-radius: 8px;
@@ -271,10 +274,6 @@ ul{
   border-color: #298FCA #298FCA #026AA7;
 }
 
-.material-icons{
-  vertical-align: middle;
-}
-
 .add-card-button{
 	background-color: #A9A9A9;
 }
@@ -286,9 +285,8 @@ ul{
 
 
 
-
-
-.modal {
+/* New list form ----------------------------------------- */
+.modal  {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 10; /* Sit on top */
@@ -315,7 +313,10 @@ ul{
 	vertical-align: middle;
 }
 
-.close-modal{
+.close-modal, .close-labels {
+	position: absolute;
+	top: 10px; /* top and right matches padding of .card */
+	right: 10px;
 }
 
 .close:hover, .close:focus{
@@ -326,19 +327,70 @@ ul{
 	display: none;
 }
 
-#add-labels{
-	display: none;
-	width: 40%;
+
+
+/* add labels ----------------------------------------- */
+#add-labels-button:hover {
+	color: #808080;
+}
+
+.select-color-view{
+	background-color: #FFF;
+	position: absolute;
+	/* top: 0; */
+	left: 0;
 	z-index: 1;
-}
-
-.label-select{
-	width: 100%:
-}
-
-#dummy-card{
 	display: none;
+	padding: 10px;
 }
+
+.select-color-list{
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	width: 200px;
+}
+
+.select-color-label-big{
+	border: 1px solid black;
+	width: 100%;
+	height: 30px;
+	margin: 5px 0;
+	border-radius: 5px;
+}
+
+.display-labels-div{
+	width: 100%;
+}
+
+.display-labels{ /*list view*/
+	display: inline-block;
+	height: 10px;
+	width: 50px;
+	border: 1px solid black;
+	border-radius: 3px;
+	margin: 5px;
+}
+
+.display-labels-card{ /*card view*/
+	display: inline-block;
+	width: 40px;
+	height: 30px;
+	border-radius: 8px;
+	margin: 5px;
+}
+
+.material-icons{
+	vertical-align: middle;
+}
+
+.select-color-label-big .material-icons{
+	display: none;
+	float: right;
+	color: #000;
+}
+
+
 
 
 

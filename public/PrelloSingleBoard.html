@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Prello Single Board</title>
+		<link rel="stylesheet" href="stylesheets/singleBoardStylesheet.css" type="text/css">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<script
+			  src="https://code.jquery.com/jquery-3.2.1.min.js"
+			  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+			  crossorigin="anonymous"></script>
+	</head>
+	<body>
+			
+		<div id = "nav-bar" class="justify-div-content">
+			<div id="boards-button">
+				<a href="#">Boards</a>
+				<div id="board"> <!--Board sidebar-->
+					 <form action="">
+						<input type="search" name="search" placeholder="Find boards:">
+					</form> 
+					<br>
+					Recent Boards:
+					<br>
+					<ul class = "board-list">
+						<li><a href="#">Bread Board</a></li>
+						<li><a href="#">Surf Board</a></li>
+						<li><a href="#">Create a new board</a></li>
+					</ul>
+				</div>
+			</div>
+			<div><a href="#">Trello</a></div>
+			<div id="options-button">
+				<a href="#">Options</a>
+				<div id="options"><!--Options and settings sidebar-->
+					Bob Dole Jr.
+					<hr>
+					<div><a href="#">Profile</a></div>
+					<div><a href="#">Cards</a></div>
+					<div><a href="#">Settings</a></div>
+					<hr>
+					<div><a href="#">Help</a></div>
+					<div><a href="#">Shortcuts</a></div>
+					<div><a href="#">Change Language...</a></div>
+					<hr>
+					<div><a href="#">Log Out</a></div>
+				</div>
+			</div>
+		</div>
+		
+		<!--List of cards-->
+		<ul class="outer-list">
+			<!-- Dynamically generated cards -->
+			<li>
+				<div id="add-list-message">Add a list</div>
+				<ul class="inner-list">
+					<li>
+						<form id="add-list-form">
+						  <input type="text" name="listName" placeholder="Add a list..." required>
+						  <hr>
+						  <input type="submit" value="Save">
+						  <span id="close-add-list" class="close">&times;</span>
+						</form>
+					</li>
+				</ul>
+			</li> 
+		</ul>	
+
+	<div id="cardModal" class="modal">
+		<!-- Modal ccontent -->
+		<div class="modal-content">
+			<div class = "card">
+				<span class="close close-modal">&times;</span>
+				<div class="card-content">
+				<h3 id="single-card-title">Recreate the Trello Website</h3>
+				
+				<div class="user-and-label">
+				  <h3>Users:</h3>
+				  <div id="single-card-users">
+				  <i class="material-icons">account_box</i>
+				  <i class="material-icons">account_box</i>
+				  <i class="material-icons">add_box</i>
+				  </div>
+				</div>
+				<div class="user-and-label">
+					<h3>Labels:</h3>
+					<div id="single-card-labels">
+					</div>
+					<i class="material-icons" id="add-labels-button">add_box</i>
+					<div class="select-color-view">
+						<h3>Labels</h3>
+						<span class="close close-labels">&times;</span>
+						<hr>
+						<div class="select-color-list"></div>
+					</div>
+				</div>
+					
+				<div id ="card-description">
+					<h3>Description</h3>
+					<p id="single-card-desc-body">
+						Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+						Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
+					</p>
+				</div>
+				
+				<h2><i class="material-icons">chat_bubble_outline</i><span>Comments</span></h2>
+				  <form action="/action_page.php">
+					<textarea name="comment" rows="3" cols="28" placeholder="Enter your comment..."></textarea>
+					<br>
+					<input type="submit" value="Submit">
+				  </form> 
+				</div>
+				<div class="card-sidebar">
+				<h3>Add</h3>
+				<ul>
+					<li><button type="button">Members</button></li>
+					<li><button type="button">Labels</button></li>
+					<li><button type="button">Checklist</button></li>
+					<li><button type="button">Due Date</button></li>
+					<li><button type="button">Attachment</button></li>
+				</ul>				
+				<h3>Actions</h3>
+				<ul>
+					<li><button type="button">Move</button></li>
+					<li><button type="button">Copy</button></li>
+					<li><button type="button">Subscribe</button></li>
+					<hr>
+					<li><button type="button">Archive</button></li>
+				</ul>
+				<br>
+				<a href="">Share and more...</a>
+				</div>
+			</div><!--end card-->
+		</div>
+	</div>
+		
+		
+		<!--empty card-->
+		<div id="myModal" class="modal">
+			<!-- Modal content -->
+			<div class="modal-content">
+				<div id="empty-card" class = "card">
+					<form id="new-card-form">
+						<span class="close close-modal">&times;</span>
+						<input type="text" name="title" placeholder="Insert a new title" required>
+						
+						<div class="user-and-label">
+						  <h3>Users:</h3>
+						  <i class="material-icons">add_box</i>
+						</div>
+						<div class="user-and-label">
+						  <h3>Labels:</h3>
+						  <div class="label">Add Tag</div>
+						</div>
+						<div style="clear:both;"></div> <!-- used to separate the user/label and description -->
+						<div class ="card-description">
+							<h3>Description</h3>	
+							<textarea name="description" rows="3" cols="30" placeholder="Add a description"></textarea>
+						</div>
+						<h2><i class="material-icons">chat_bubble_outline</i><span>Comments</span></h2>
+						<textarea name="comment" rows="3" cols="30" placeholder="Enter your comment"></textarea>
+						<br>
+						
+						<input type="submit" value="Add Card">
+					</form> 
+				</div>
+			</div>
+		</div>	
+		<!--end modal-->	
+		
+		<script src="javascripts/PrelloManageLabels.js"></script>
+		<script src="javascripts/PrelloLoadCards.js"></script>
+		<script src="javascripts/PrelloManageCard.js"></script>
+		<script src="javascripts/PrelloManageList.js"></script>
+		<script src="javascripts/PrelloNavBar.js"></script> 		
+	</body>
+</html>

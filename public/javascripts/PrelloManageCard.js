@@ -1,4 +1,4 @@
-$(function() {
+$(function(){
 	var currentCard;
 	var outerList = $(".outer-list");
 	
@@ -9,7 +9,9 @@ $(function() {
 
 	// When the user clicks on <span> (x), close the modal
 	$(".close-modal").on("click", function(){
-		$("#myModal").css("display","none");
+		//$("#myModal").css("display","none");
+		//$("#cardModal").css("display","none");
+		$(this).parents(".modal").css("display", "none")
 		$("#new-card-form")[0].reset();
 	}); 
 
@@ -19,6 +21,8 @@ $(function() {
 		if (event.target === modal[0]) {
 			modal.css("display","none");
 			$("#new-card-form")[0].reset();
+		} else if (event.target === $("REPLACE THIS")) { //new card modal
+
 		}
 	}); 
 
@@ -39,7 +43,7 @@ $(function() {
 		//post to create, patch to update w/ relevant fields
 		var serverResponse;
 		$.ajax({
-			url: "http://thiman.me:1337/keung/list/"+ listID +"/card",
+			url: "http://localhost:3000/list/"+ listID +"/card",
 			data: {
 			},
 			type: "POST",	 		
@@ -51,7 +55,7 @@ $(function() {
 
 			//patch w/ cardID to change, add labels here later
 			$.ajax({
-				url: "http://thiman.me:1337/keung/list/"+ listID +"/card/" + cardID,
+				url: "http://localhost:3000/list/"+ listID +"/card/" + cardID,
 				data: {
 					"_id": cardID,
 					"description": card_title},
@@ -81,6 +85,7 @@ $(function() {
 
 	
 	//remove card
+	/*
 	outerList.on( "click", ".inner-list button:not(.add-card-button)", function(event) {
 		var currentButton = $(event.target);		
 		
@@ -89,7 +94,7 @@ $(function() {
 		var cardIndex = map[cardID].cardIndex;
 		
 		$.ajax({
-			url: "http://thiman.me:1337/keung/list/"+ listCards[listIndex]._id +"/card/" + listCards[listIndex].cards[cardIndex]._id,
+			url: "http://localhost:3000/list/"+ listCards[listIndex]._id +"/card/" + listCards[listIndex].cards[cardIndex]._id,
 			data: {
 			},
 			type: "DELETE",	 		// Whether this is a POST or GET request
@@ -105,11 +110,50 @@ $(function() {
 		//get parent, since the button was clicked and we want to remove the li (parent)
 		currentButton.parent().remove(); 
 	});
+	*/
 	
 	
 	// view or change card 
-	outerList.on( "click", ".inner-list button:not(.add-card-button)",function(event) {
+	outerList.on("click", ".inner-list button:not(.add-card-button)", function(event){
+		
+		$("#cardModal").css("display","block");
+		
+		var currentButton = $(event.target);
+		var cardID = currentButton.parent().attr("data-card-id");
+		var listIndex = map[cardID].listIndex;
+		var cardIndex = map[cardID].cardIndex;
+		
+		//set current card for label data
+		$("#cardModal").attr("data-card-id", cardID);
+		$("#cardModal").attr("data-list-id", listCards[listIndex]._id);
+		
+		//set display for a card
+		
+		//set title,set description
+		$("#single-card-title").html(listCards[listIndex].cards[cardIndex].description);
 	
+		//reset label display
+		$(".select-color-label-big").removeClass("active").find("i").css("display", "none");
+		
+		//set labels in card view
+		var tempColors = listCards[listIndex].cards[cardIndex].labels;
+		
+		//set labels in list view
+		var cardViewLabels = $("#single-card-labels");
+		cardViewLabels.html("");
+
+		//generate items
+		for (var i =0; i < tempColors.length; i++){
+			var newDiv = $("<div/>");
+			newDiv.addClass("display-labels-card").css("background-color", tempColors[i]);
+			cardViewLabels.append(newDiv);
+		}
+		
+		/*
+		var data = $("#cardModal").attr("data-card-id");
+		var displayLabelsDiv = $(`li[data-card-id=${cardID}] .display-labels-div`);
+		renderLabels(tempColors, displayLabelsDiv);
+		*/
 	});
 	
 });

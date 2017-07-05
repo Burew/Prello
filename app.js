@@ -5,10 +5,12 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var cors = require('cors');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
 var lists = require('./routes/list');
+var singleBoard = require('./routes/prelloSingleBoard');
 
 mongoose.connect('mongodb://localhost/test');
 
@@ -25,12 +27,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors()); //allow cors everywhere
 
 app.use('/', index);
+app.use('/singleBoard', singleBoard);
 app.use('/users', users);
 app.use('/list', lists);
 
-// catch 404 and forward to error handler
+// catch 404 and forward to error handler 
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;

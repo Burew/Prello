@@ -12,7 +12,7 @@ $(function() {
 		
 		//DELETE the current list associated w/ listID on server 		
 		$.ajax({
-			url: "http://thiman.me:1337/keung/list/"+ listID,
+			url: "http://localhost:3000/list/"+ listID,
 			data: {},
 			type: "DELETE",	 
 			dataType : "json", 
@@ -43,7 +43,7 @@ $(function() {
 		
 		//create new list in server using POST 
 		$.ajax({
-			url: "http://thiman.me:1337/keung/list",
+			url: "http://localhost:3000/list",
 			data: {
 				"title": newListValue
 			},
