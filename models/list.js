@@ -1,10 +1,7 @@
 var mongoose = require('mongoose');
-var card = require('./card');
 
-var List = mongoose.model('List', { //model the list
-	title: String,
-	cards: [card],
-	description: String
-});
+var listSchema = require('./listSchema');
+
+var List = mongoose.model('List', listSchema);
 
 module.exports = List;

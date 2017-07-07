@@ -1,9 +1,9 @@
 <% include header %>
-	
+		<h1 style='color:red; text-align:center;'><%= error %></h1>
 		<div class = "form-center">
 			<h1>Create an account</h1>
 			<hr>
-			<form id="create-account-form">
+			<form id="create-account-form" action="/users/" method="post">
 				Username: <br>
 				<input type="text" id="create-user" name="username" required><br>
 				Email: <br>
@@ -19,7 +19,7 @@
 		<div class = "form-center">
 			<h1>Login</h1>
 			<hr>
-			<form id="login-form">
+			<form id="login-form" action="/users/confirm" method="post">
 				Username: <br>
 				<input type="text" id="login-user" name="username" required><br>
 				Password: <br>

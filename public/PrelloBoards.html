@@ -1,26 +1,47 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>Prello Boards</title>
-		<link rel="stylesheet" href="stylesheets/style.css" type="text/css">
-	</head>
-	<body>
-	
-		<div>
-			<h2>Personal Boards</h2>
-			<ul class = "board-list">
-				<li><a href="#">Bread Board</a></li>
-				<li><a href="#">Surf Board</a></li>
-				<li><a href="#">Create a new board</a></li>
-			</ul>
-		</div>
-		<div>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Prello Boards</title>
+	<link rel="stylesheet" href="stylesheets/singleBoardStylesheet.css" type="text/css">
+	<script
+		  src="https://code.jquery.com/jquery-3.2.1.min.js"
+		  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+		  crossorigin="anonymous"></script>
+</head>
+<body>
+	<div>
+		<h2>Personal Boards</h2>
+		<ul class="board-collection">
+			<li><a>Bread Board</a></li>
+			<li><a>Surf Board</a></li>
+			<li class="add-new-board">
+				<div class="add-new-board-form-text">
+					<a>Create a new board</a>
+				</div>
+				<form class="add-new-board-form">
+					<input type="text" name="newBoardName" placeholder="Enter a new board name...">
+					<input type="submit" value="Save">
+				</form>
+			</li>
+		</ul>
+	</div>
+	<div>
 		<h2>Work</h2>
-			<ul class = "board-list">
-				<li><a href="#">Drawing Board</a></li>
-				<li><a href="#">Create a new board</a></li>
-			</ul>
-		</div>
-	</body>
+		<ul class="board-collection">
+			<li><a>Drawing Board</a></li>
+			<li class="add-new-board">
+				<div class="add-new-board-form-text">
+					<a>Create a new board</a>
+				</div>
+				<form class="add-new-board-form">
+					<input type="text" name="newBoardName" placeholder="Enter a new board name...">
+					<input type="submit" value="Save">
+				</form>
+			</li>
+		</ul>
+	</div>
+	<script src="javascripts/PrelloLoadBoards.js"></script>
+	<script src="javascripts/PrelloManageBoards.js"></script>
+</body>
 </html>

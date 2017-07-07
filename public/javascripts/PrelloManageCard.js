@@ -21,9 +21,9 @@ $(function(){
 		if (event.target === modal[0]) {
 			modal.css("display","none");
 			$("#new-card-form")[0].reset();
-		} else if (event.target === $("REPLACE THIS")) { //new card modal
+		} /* else if (event.target === $("REPLACE THIS")) { //new card modal
 
-		}
+		} */
 	}); 
 
 	//add a new card
@@ -82,7 +82,7 @@ $(function(){
 		$(".close-modal").click();		
 		$(this)[0].reset();
 	});
-
+	
 	
 	//remove card
 	/*
@@ -127,7 +127,7 @@ $(function(){
 		$("#cardModal").attr("data-card-id", cardID);
 		$("#cardModal").attr("data-list-id", listCards[listIndex]._id);
 		
-		//set display for a card
+		// change modal display for a card
 		
 		//set title,set description
 		$("#single-card-title").html(listCards[listIndex].cards[cardIndex].description);
@@ -135,25 +135,35 @@ $(function(){
 		//reset label display
 		$(".select-color-label-big").removeClass("active").find("i").css("display", "none");
 		
-		//set labels in card view
-		var tempColors = listCards[listIndex].cards[cardIndex].labels;
-		
 		//set labels in list view
 		var cardViewLabels = $("#single-card-labels");
 		cardViewLabels.html("");
 
-		//generate items
+		//get labels to display in card view
+		var tempColors = listCards[listIndex].cards[cardIndex].labels;
+		
+		//display labels in card view
 		for (var i =0; i < tempColors.length; i++){
 			var newDiv = $("<div/>");
 			newDiv.addClass("display-labels-card").css("background-color", tempColors[i]);
 			cardViewLabels.append(newDiv);
 		}
 		
+		//change labels in select labels
 		/*
 		var data = $("#cardModal").attr("data-card-id");
 		var displayLabelsDiv = $(`li[data-card-id=${cardID}] .display-labels-div`);
 		renderLabels(tempColors, displayLabelsDiv);
 		*/
+		
+		//reset comments
+		$("#comment-container").html("");
+		
+		// set comments
+		var tempComments = listCards[listIndex].cards[cardIndex].comments;
+		for (let comment of tempComments){
+			renderComment(comment.comment, new Date(comment.date), comment.author);
+		}
 	});
 	
 });

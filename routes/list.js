@@ -1,34 +1,23 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var List = require('../models/list');
+var requireLogin = require('./requireLogin');
 
 var router = express.Router();
 
-//modify this to fit your model
-/*
-var card = new mongoose.Schema({ //has to be schema for a card`
-	title: String,
-	description: String,
-	labels: Array
-});
-
-
-var List = mongoose.model('List', { //model the list
-	title: String,
-	cards: [card],
-	description: String
-});
-
-*/
-
-
 /* Lists */
-router.get('/', function(req, res) {
-	//res.render('index', { title: 'Express' });
+router.get('/', /* requireLogin, */ function(req, res) {
 	List.find(function (err, lists) {
 		if (err) return console.error(err);
 		res.json(lists);
-	})
+	});
+});
+
+router.get('/board', /* requireLogin, */ function(req, res) {
+	List.find(function (err, lists) {
+		if (err) return console.error(err);
+		res.render('prelloSingleBoard', {title: 'Prello'});
+	});
 });
 
 router.post('/', function(req, res){	
@@ -80,7 +69,6 @@ router.delete('/:listID', function(req, res) {
 /* Cards */
 //create new card
 router.post('/:listID/card', function(req, res){
-	
 	List.findOne({ _id: req.params.listID}, function (err, oldList) {
 		if (err) 
 			return console.error(err);
@@ -89,14 +77,17 @@ router.post('/:listID/card', function(req, res){
 			return;
 		}
 		
+		console.log("username: " + req.user.username);
+		
 		//add new empty card
 		oldList.cards.push(
-			/*
+			{
 			title: req.body.title ||  "",
 			description: req.body.description || "",
-			labels: req.body.labels || []
-			*/
-			req.body	//change later if attr are needed
+			labels: req.body.labels || [],
+			author: req.user.username || ""
+			}
+			//req.body	//change later if attr are needed
 		);
 		
 		oldList.save(function(err, list){
@@ -150,6 +141,33 @@ router.delete('/:listID/card/:cardID', function(req, res) {
 	});
 });
 
+/* Comments */
+//create comment
+router.post('/:listID/card/:cardID/comment', function(req, res) {
+	List.findOne({ _id:  req.params.listID}, function (err, oldList) {
+		if (err) 
+			return console.error(err);
+		if (oldList == null){
+			res.send("");
+			return;
+		}
+		
+		//Object.assign(oldList.cards.id(req.params.cardID), req.body);
+		oldList.cards.id(req.params.cardID).comments.push({
+			"author": req.session.user.username || "UNDEFINED_USER, USER MUST lOG IN FIRST",
+			"comment": req.body.comment,
+			"date": req.body.date
+		});
+		
+		oldList.save(function(err, list){
+			if(err){
+				console.log(err);
+			} else {
+				res.json(list);
+			}
+		});		
+	});
+});
 
 
 module.exports = router;

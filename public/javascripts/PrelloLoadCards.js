@@ -49,11 +49,11 @@ function findListIndex(listID) {
 		}
 	};	
 	return -1;
-};
+}
 
 function printAll(){
 	listCards.forEach(printList);
-};
+}
 
 function printList(list){
 	console.log("Title: " + list.title);
@@ -65,7 +65,6 @@ function printCard(card){
 }
 
 function renderLabels(tempColors, displayLabelsDiv){
-	
 	//reset div value
 	displayLabelsDiv.html("");
 
@@ -75,7 +74,54 @@ function renderLabels(tempColors, displayLabelsDiv){
 		newDiv.addClass("display-labels").css("background-color", tempColors[i]);
 		displayLabelsDiv.append(newDiv);
 	}
+} 
+
+function addNewComment(newComment){
+	
+	let date = new Date();
+	//modify local data structures and server 
+	var cardID = $("#cardModal").attr("data-card-id");
+	var listIndex = map[cardID].listIndex;
+	var cardIndex = map[cardID].cardIndex;
+
+	//update local data structure later
+	$.ajax({
+		url: "http://localhost:3000/list/"+ listCards[listIndex]._id +"/card/" + listCards[listIndex].cards[cardIndex]._id +"/comment",
+		data: {
+			comment: newComment,
+			date: date.toString() //use a date string, use new Date(timestamp).toLocaleString() to read
+		},
+		type: "POST",	 		
+		dataType : "json", 	
+	}).done(function( json ){
+		//update internal data structures;
+		listCards[listIndex] = json;
+		let len = json.cards[cardIndex].comments.length;
+		renderComment(newComment, date, json.cards[cardIndex].comments[len - 1].author);
+	});
 }
+
+function renderComment(comment, date, author){
+	//generate comment block and display in card view
+	let mainDiv=$("<div/>").addClass("comment");
+
+	//comment data
+	let commentDiv=$("<div/>").addClass("comment-content").html(comment);
+	//comment author data
+	let dataDiv=$("<div/>").addClass("comment-data");
+	let authorSpan = $("<span/>").addClass("comment-author").html(author);
+	//let timeStamp = new Date();
+	let timeSpan = $("<span/>").addClass("comment-time").html(date.toLocaleString());
+	//let dateSpan = $("<span/>").addClass("comment-date").html(date.toLocaleDateString());
+
+	//dataDiv.append("- ", authorSpan, " at " ,timeSpan, ", ", dateSpan );
+	dataDiv.append("- ", authorSpan, " at ", timeSpan);
+	
+	mainDiv.append(commentDiv, dataDiv);
+
+	//add comment, most recent first
+	$("#comment-container").prepend(mainDiv);
+};
 
 
 //populate w/ data
@@ -83,7 +129,7 @@ var lol;
 var listCards;
 var map = {};
 
-$(function() {
+$(function(){
 	
 	$.ajax({
 	//url: "http://thiman.me:1337/keung/list",
@@ -119,7 +165,7 @@ $(function() {
 		  
 		  map[card._id] = {listIndex, cardIndex}; //listIndex, cardIndex;
 		  cardLi.append('<button type="button">'+ card.description +'</button>');
-		  cardsUl.append(cardLi);
+		  cardsUl.append(cardLi); 
 		}
 		
 		//add-card-button (last)

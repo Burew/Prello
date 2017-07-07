@@ -2,33 +2,7 @@
 <% include navBar %>
 		<!--List of cards-->
 		<ul class="outer-list">
-<!--
-			<li>
-				<div>List 1 <span class='close close-list'>&times;</span></div>
-				<ul class="inner-list">
-					<li><button type='button'>Card A1</button></li>
-					<li><button type='button'>Card A2</button></li>
-					<li><button type='button'>Card A3</button></li>
-					<li><button type='button'>Card A4</button></li>
-					<li><button type='button' class="add-card-button">Add a card</button></li>
-				</ul>
-			</li>
-			<li>
-				<div>List 2 <span class='close close-list'>&times;</span></div>
-				<ul class="inner-list">
-					<li><button type='button'>Card B1</button></li>
-					<li><button type='button'>Card B2</button></li>
-					<li><button type='button' class="add-card-button">Add a card</button></li>
-				</ul>
-			</li>
-			<li>
-				<div>List 3 <span class='close close-list'>&times;</span></div>
-				<ul class="inner-list">
-					<li><button type='button'>Card C1</button></li>
-					<li><button type='button' class="add-card-button">Add a card</button></li>
-				</ul>
-			</li>
--->
+			<!-- Dynamically generated cards -->
 			<li>
 				<div id="add-list-message">Add a list</div>
 				<ul class="inner-list">
@@ -42,73 +16,76 @@
 					</li>
 				</ul>
 			</li> 
-		</ul>
-				
-		<!--Dummy card at bottom, hidden by default-->
-		<div class = "card" id="dummy-card">
-			<div class="card-content">
-			<h3>Recreate the Trello Website</h3>
-			
-			<div class="user-and-label">
-			  <h3>Users:</h3>
-			  <i class="material-icons">account_box</i>
-			  <i class="material-icons">account_box</i>
-			  <i class="material-icons">add_box</i>
+		</ul>	
+
+		<div id="cardModal" class="modal">
+			<!-- Modal ccontent -->
+			<div class="modal-content">
+				<div class = "card">
+					<span class="close close-modal">&times;</span>
+					<div class="card-content">
+						<h3 id="single-card-title">Recreate the Trello Website</h3>
+						
+						<div class="user-and-label">
+						  <h3>Users:</h3>
+						  <div id="single-card-users">
+						  <i class="material-icons">account_box</i>
+						  <i class="material-icons">account_box</i>
+						  <i class="material-icons">add_box</i>
+						  </div>
+						</div>
+						<div class="user-and-label">
+							<h3>Labels:</h3>
+							<div id="single-card-labels">
+							</div>
+							<i class="material-icons" id="add-labels-button">add_box</i>
+							<div class="select-color-view">
+								<h3>Labels</h3>
+								<span class="close close-labels">&times;</span>
+								<hr>
+								<div class="select-color-list"></div>
+							</div>
+						</div>
+						<div id ="card-description">
+							<h3>Description</h3>
+							<p id="single-card-desc-body">
+								Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+								Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
+							</p>
+						</div>
+						<h2><i class="material-icons">chat_bubble_outline</i><span>Comments</span></h2>
+						<form id="comment-form">
+							<textarea name="comment" rows="2" cols="28" placeholder="Enter your comment..."></textarea>
+							<br>
+							<input type="submit" value="Save">
+						</form> 
+						<div id="comment-container">
+						</div>
+					</div> <!-- end card content-->
+					
+					<div class="card-sidebar">
+					<h3>Add</h3>
+					<ul>
+						<li><button type="button">Members</button></li>
+						<li><button type="button">Labels</button></li>
+						<li><button type="button">Checklist</button></li>
+						<li><button type="button">Due Date</button></li>
+						<li><button type="button">Attachment</button></li>
+					</ul>				
+					<h3>Actions</h3>
+					<ul>
+						<li><button type="button">Move</button></li>
+						<li><button type="button">Copy</button></li>
+						<li><button type="button">Subscribe</button></li>
+						<hr>
+						<li><button type="button">Archive</button></li>
+					</ul>
+					<br>
+					<a href="">Share and more...</a>
+					</div>
+				</div><!--end card-->
 			</div>
-			<div class="user-and-label">
-			  <h3>Labels:</h3>
-					<button type="button">Members</button>
-					<button type="button">Labels</button>
-			<i class="material-icons" id="add-labels-button">add_box</i>
-			<div id = "add-labels">
-				<ul>
-					<li><span class="label-select red"></span></li>
-					<li><span class="label-select yellow"></span></li>
-					<li><span class="label-select orange"></span></li>
-					<li><span class="label-select green"></span></li>
-					<li><span class="label-select blue"></span></li>
-					<li><span class="label-select indigo"></span></li>
-					<li><span class="label-select violet"></span></li>
-				</ul>
-			</div>
-			</div>
-				
-			<div id ="card-description">
-				<h3>Description</h3>
-				<p>	Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-					Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-				</p>
-			</div>
-			
-			<h2><i class="material-icons">chat_bubble_outline</i><span>Comments</span></h2>
-			  <form action="/action_page.php">
-				<textarea name="comment" rows="3" cols="28">Enter your comment</textarea>
-				<br>
-				<input type="submit" value="Submit">
-			  </form> 
-			</div>
-			<div class="card-sidebar">
-				<b>Add</b>
-				<ul>
-					<li><button type="button">Members</button></li>
-					<li><button type="button">Labels</button></li>
-					<li><button type="button">Checklist</button></li>
-					<li><button type="button">Due Date</button></li>
-					<li><button type="button">Attachment</button></li>
-				</ul>				
-				<b>Actions</b>
-				<ul>
-          <li><button type="button">Move</button></li>
-          <li><button type="button">Copy</button></li>
-          <li><button type="button">Subscribe</button></li>
-					<hr>
-          <li><button type="button">Archive</button></li>
-				</ul>
-				<br>
-				<a href="">Share and more...</a>
-			</div>
-		</div><!--end card-->
-		
+		</div>
 		
 		
 		<!--empty card-->
@@ -142,11 +119,15 @@
 				</div>
 			</div>
 		</div>	
-		<!--end modal-->
+		<!--end modal-->	
 		
 		
 		<script src="javascripts/PrelloLoadCards.js"></script>
 		<script src="javascripts/PrelloManageCard.js"></script>
 		<script src="javascripts/PrelloManageList.js"></script>
-		<script src="javascripts/PrelloNavBar.js"></script> 		
+		<script src="javascripts/PrelloNavBar.js"></script> 
+		<script src="javascripts/PrelloManageLabels.js"></script>		
+		<script src="javascripts/PrelloManageComments.js"></script>			
 <% include footer %>
+
+
