@@ -1,3 +1,4 @@
+
 $(function(){
 	
 	$(".board-collection").on("click" , ".add-new-board", function(){
@@ -61,11 +62,11 @@ $(function(){
 			dataType : "json", 
 		}).done(function( json ){
 			//delete from view once ajax done
-			currentBoard.remove();
+			//TODO: AJAX does not send response
 			//do not need to update local data struct --- all references to boardID removed...
 		});
 		
-			
+		currentBoard.remove();
 	});
 	
 	//click on boards -- load a list

@@ -1,3 +1,4 @@
+var currentList
 $(function(){
 	var currentCard;
 	var outerList = $(".outer-list");
@@ -34,7 +35,7 @@ $(function(){
 		var card_title = $("#new-card-form input[name=title]").val();
 		
 		//get list element
-		var currentList = $(currentCard).parents(".outer-list > li");
+		currentList = $(currentCard).parents(".outer-list > li");
 		var listID = currentList.attr("data-list-id"); 
 		var cardID;
 		var cards;
@@ -43,7 +44,7 @@ $(function(){
 		//post to create, patch to update w/ relevant fields
 		var serverResponse;
 		$.ajax({
-			url: "http://localhost:3000/list/"+ listID +"/card",
+			url: "http://localhost:3000/list/" + currentBoardID + "/" + listID +"/card",
 			data: {
 			},
 			type: "POST",	 		
@@ -55,7 +56,7 @@ $(function(){
 
 			//patch w/ cardID to change, add labels here later
 			$.ajax({
-				url: "http://localhost:3000/list/"+ listID +"/card/" + cardID,
+				url: "http://localhost:3000/list/" + currentBoardID + "/" + listID +"/card/" + cardID,
 				data: {
 					"_id": cardID,
 					"description": card_title},

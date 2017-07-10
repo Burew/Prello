@@ -45,7 +45,7 @@ $(document).ready(function(){
 		
 		//update data
 		$.ajax({
-			url: "http://localhost:3000/list/"+ listCards[listIndex]._id +"/card/" + listCards[listIndex].cards[cardIndex]._id,
+			url: "http://localhost:3000/list/" + currentBoardID + "/" + listCards[listIndex]._id + "/card/" + listCards[listIndex].cards[cardIndex]._id,
 			data: {
 				labels: tempColors 
 			},

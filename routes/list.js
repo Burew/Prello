@@ -20,8 +20,7 @@ router.get('/:boardID', /* requireLogin, */ function(req, res) {
 			return;
 		}
 		
-		req.boardID = req.params.boardID;
-		console.log(req.boardID);
+		//req.boardID = req.params.boardID;
 		res.json(oldBoard);
 	});
 });
@@ -184,6 +183,7 @@ router.post('/:boardID/:listID/card', function(req, res){
 		}
 		
 		var temp = oldBoard.list.id(req.params.listID);
+		console.log(temp);
 		temp.cards.push({
 			title: req.body.title ||  "",
 			description: req.body.description || "",
@@ -196,7 +196,8 @@ router.post('/:boardID/:listID/card', function(req, res){
 			console.log(err);
 		} else {
 			//res.json(newBoard.list.id(req.params.listID));
-			res.send(newBoard);
+			//res.send(newBoard);
+			res.json(newBoard.list.id(req.params.listID));
 		}
 		});
 	});
@@ -237,7 +238,8 @@ router.patch('/:boardID/:listID/card/:cardID', function(req, res) {
 		if(err){
 			console.log(err);
 		} else {
-			res.send(newBoard);
+			//res.send(newBoard);
+			res.json(newBoard.list.id(req.params.listID));
 		}
 		});
 	});
@@ -329,8 +331,8 @@ router.post('/:boardID/:listID/card/:cardID/comment', function(req, res) {
 		if(err){
 			console.log(err);
 		} else {
-			//res.json(newBoard.list.id(req.params.listID));
-			res.send(newBoard);
+			res.json(newBoard.list.id(req.params.listID));
+			//res.send(newBoard);
 		}
 		});
 	});

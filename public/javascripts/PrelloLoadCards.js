@@ -43,7 +43,7 @@ function addNewComment(newComment){
 
 	//update local data structure later
 	$.ajax({
-		url: "http://localhost:3000/list/"+ listCards[listIndex]._id +"/card/" + listCards[listIndex].cards[cardIndex]._id +"/comment",
+		url: "http://localhost:3000/list/" + currentBoardID + "/" + listCards[listIndex]._id +"/card/" + listCards[listIndex].cards[cardIndex]._id +"/comment",
 		data: {
 			comment: newComment,
 			date: date.toString() //use a date string, use new Date(timestamp).toLocaleString() to read
@@ -91,7 +91,7 @@ $(function(){
 	$.ajax({
 	//url: "http://thiman.me:1337/keung/list",
 	//url: "http://localhost:3000/list/",
-	url: "http://localhost:3000/list/board/" + currentBoardID,
+	url: "http://localhost:3000/list/" + currentBoardID, 
 	data: {
 	},
 	type: "GET",	 // Whether this is a POST or GET request
