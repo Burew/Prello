@@ -1,18 +1,11 @@
 <% include header %>
 <% include navBar %>	
-		<div>
-			<h2>Personal Boards</h2>
-			<ul class = "board-list">
-				<li><a href="#">Bread Board</a></li>
-				<li><a href="#">Surf Board</a></li>
-				<li><a href="#">Create a new board</a></li>
-			</ul>
-		</div>
-		<div>
-		<h2>Work</h2>
-			<ul class = "board-list">
-				<li><a href="#">Drawing Board</a></li>
-				<li><a href="#">Create a new board</a></li>
-			</ul>
-		</div>
+	<div>
+		<h2>Boards</h2>
+		<ul class="board-collection">
+		</ul>
+	</div>
+	
+	<script src="/javascripts/PrelloLoadBoards.js"></script>
+	<script src="/javascripts/PrelloManageBoards.js"></script>
 <% include footer %>

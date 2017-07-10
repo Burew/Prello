@@ -5,13 +5,18 @@ var requireLogin = require('./requireLogin');
 
 var router = express.Router();
 
-//boards page
+//get all boards (loading board page)
 router.get('/', function(req, res, next) { 
-	res.render('prelloDashboard', { title: 'Dashboard', error:''});
+	console.log("GET /board");
+	Board.find(function (err, boards) {
+		if (err) return console.error(err);
+		res.json(boards);
+	});
 });
 
-//get lists of board
+//get single board
 router.get('/:boardID', function(req, res, next) { 
+	console.log("GET /board/" + req.params.boardID);
 	Board.findOne({_id: req.params.boardID}, function (err, oldBoard) {
 		if (err) 
 			return console.error(err);
@@ -19,19 +24,21 @@ router.get('/:boardID', function(req, res, next) {
 			res.send("");
 			return;
 		}
-		//get listIDs
-		
+		//TODO: keep track of boardID for lists
+		res.render('prelloSingleBoard', {title: 'Prello', currentBoardID: req.params.boardID});
+		//res.redirect("/list/board");
 	});
-	res.send("");
-});
+});	
 
 //add new board
 router.post('/', function(req, res, next) { 
+	console.log("POST /board");
 	var newBoard = new Board(
 		/* req.body */
 		{ 
+			title: req.body.title,
 			list: req.body.list, 
-			userIDs:[ req.user.username || "USERNAME" ]
+			userIDs:[req.user._id] //init to current user
 		}
 	);
 	newBoard.save(function(err, board){
@@ -46,6 +53,7 @@ router.post('/', function(req, res, next) {
 //change board -- add users?
 //replaces content of entire board
 router.patch('/:boardID', function(req, res) {
+	console.log("PATCH /board/" + req.params.boardID);
 	Board.findOne({_id: req.params.boardID}, function (err, oldBoard) {
 		if (err) 
 			return console.error(err);
@@ -62,12 +70,11 @@ router.patch('/:boardID', function(req, res) {
 				res.json(board);
 			}
 		});
-		
 	});
-	res.send("");
 });
 
 router.delete('/:boardID', function(req, res) {
+	console.log("DELETE /board/" + req.params.boardID);
 	Board.findOne({_id: req.params.boardID}, function (err, oldBoard) {
 		if (err) 
 			return console.error(err);
@@ -80,9 +87,9 @@ router.delete('/:boardID', function(req, res) {
 	res.send("");
 });
 
-//route to a single board
+/* //route to a single board
 router.get('/singleBoard', function(req, res, next) {
 	res.render('prelloSingleBoard', { title: 'Single Board', error:''});
-});
+}); */
 
 module.exports = router;

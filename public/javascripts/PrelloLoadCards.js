@@ -1,46 +1,3 @@
-/*
-[
-    {
-        "_id": "5951678cfa8c1e645708417c",
-        "key": "keung",
-        "cards": [
-            {
-                "_id": "595172512f51de67c344e360",
-                "description": "Card A1"
-            },
-            {
-                "_id": "595172522f51de67c344e361",
-                "description": "Card A2"
-            },
-            {
-                "_id": "595172532f51de67c344e362",
-                "description": "Card A3"
-            },
-            {
-                "_id": "595172542f51de67c344e363",
-                "description": "Card A4"
-            }
-        ],
-        "title": "List 1"
-    },
-    {
-        "_id": "595168cefa8c1e6457084182",
-        "key": "keung",
-        "cards": [
-            {
-                "_id": "595172bc2f51de67c344e369",
-                "description": "Card B1"
-            },
-            {
-                "_id": "595172bc2f51de67c344e36a",
-                "description": "Card B2"
-            }
-        ],
-        "title": "List 2"
-    }
-]
-*/
-
 //debugging helper functions, call printAll() to see content of local data structures
 function findListIndex(listID) {
 	for (var i = 0; i < listCards.length; i++){
@@ -133,14 +90,15 @@ $(function(){
 	
 	$.ajax({
 	//url: "http://thiman.me:1337/keung/list",
-	url: "http://localhost:3000/list/",
+	//url: "http://localhost:3000/list/",
+	url: "http://localhost:3000/list/board/" + currentBoardID,
 	data: {
 	},
 	type: "GET",	 // Whether this is a POST or GET request
 	dataType : "json", // The type of data we expect back
 	})
 	.done(function( json ){ //response is passed to this function
-	 listCards = json;
+	 listCards = json.list;
 	
 	//do outer li in reverse order, to handle add-list
 	lol = $('.outer-list');

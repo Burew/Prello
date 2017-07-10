@@ -1,12 +1,13 @@
 $(function(){
 	
-	$("li.add-new-board").on("click", function(){
+	$(".board-collection").on("click" , ".add-new-board", function(){
 		var boardLI = $(this);
 		console.log(boardLI);
 		boardLI.find(".add-new-board-form-text").css("display", "none");
 		boardLI.find(".add-new-board-form").css("display", "block");
 	});
 	
+	//add boards
 	$(".board-collection").on("submit", ".add-new-board-form", function(event){
 		event.preventDefault();
 		
@@ -14,18 +15,23 @@ $(function(){
 		
 		//get value
 		var newBoardValue = boardForm.find("input[name=newBoardName]").val();
+	
+		let addBoardURL = "http://localhost:3000/board";
 		
+		console.log(`new board value: ${newBoardValue}`);
 		//talk to server
 		$.ajax({
-			url: "http://localhost:3000/board",
+			url: addBoardURL,
 			data: {
 				"title": newBoardValue
 			},
 			type: "POST",	 		
 			dataType : "json" 		
 		}).done(function( json ){
-			//assign new list to local data stucture using data returned by server
-			//listCards[listCards.length] = json;
+			//EXPECTED: json returned is new Board object with a BoardID
+			//generate new Board element and add info from data received
+			var newBoardLI = generateNewBoardObject(json._id, json.title);
+			$(".add-new-board").before(newBoardLI);
 		});
 		
 		
@@ -34,5 +40,36 @@ $(function(){
 		boardForm.css("display", "none");
 		boardForm[0].reset();
 	});
+	
+	//delete boards
+	$(".board-collection").on("click", ".close-board", function(){
+		var currentBoardClose = $(this);
+		var currentBoard = currentBoardClose.parents("li");
+	
+		console.log("DEL Current Board: ");
+		console.log(currentBoard);
+		//get boardID from parent
+		let boardID = currentBoard.attr("data-boardID");
+		
+		let delBoardURL = "http://localhost:3000/board/" + boardID;
+		
+		//send delete to server
+		$.ajax({
+			url: delBoardURL,
+			data: {},
+			type: "DELETE",	 
+			dataType : "json", 
+		}).done(function( json ){
+			//delete from view once ajax done
+			currentBoard.remove();
+			//do not need to update local data struct --- all references to boardID removed...
+		});
+		
+			
+	});
+	
+	//click on boards -- load a list
+	//add href attr in each board, fix in backend
+	//need to change listOfLists script
 		
 });

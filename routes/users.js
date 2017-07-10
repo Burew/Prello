@@ -33,7 +33,7 @@ router.post('/confirm', function(req, res) {
 		} else {
 			if (req.body.username === user.username && req.body.password === user.password) {
 				req.session.user = user;
-				res.redirect('/board');
+				res.render('prelloDashboard', { title: 'DashBoard'});
 				} else {
 				res.render('index',{title: 'Prello' , 
 								style:'stylesheets/singleBoardStylesheet.css', 

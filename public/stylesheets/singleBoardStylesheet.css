@@ -38,6 +38,7 @@ input[type=button], input[type=submit], input[type=reset]{
 	margin-left: 30%;
 }
 
+/* Board stuff */
 .board-collection {
     list-style-type: none;
     margin: 0;
@@ -47,6 +48,7 @@ input[type=button], input[type=submit], input[type=reset]{
 
 .board-collection li{
 	/*! float: left; */
+	position: relative;
 	vertical-align: top;
 	display: inline-block;
 	width: 200px;
@@ -78,12 +80,16 @@ input[type=button], input[type=submit], input[type=reset]{
 	display:none;
 }
 
+.add-new-board-form-text {
+    height: 100%;
+    width: 100%;
+}
 
 body{
   overflow: scroll;
-	white-space: nowrap;
-	margin: 0;
-	margin-top: 50px;
+  /* white-space: nowrap; */
+  margin: 0;
+  margin-top: 50px;
 }
 
 #nav-bar{
@@ -336,6 +342,15 @@ ul{
 
 .close:hover, .close:focus{
 	color: #000;
+}
+
+.close-board {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 0;
+    padding-right: 5px;
+    z-index: 1;
 }
 
 #add-list-form{

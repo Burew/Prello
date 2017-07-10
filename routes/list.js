@@ -1,27 +1,42 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var List = require('../models/list');
+var Board = require('../models/board');
 var requireLogin = require('./requireLogin');
 
 var router = express.Router();
 
-/* Lists */
-router.get('/', /* requireLogin, */ function(req, res) {
-	List.find(function (err, lists) {
+// get listOFLists
+router.get('/:boardID', /* requireLogin, */ function(req, res) {
+/* 	List.find(function (err, lists) {
 		if (err) return console.error(err);
 		res.json(lists);
+	}); */
+	Board.findOne({_id: req.params.boardID}, function (err, oldBoard) {
+		if (err) 
+			return console.error(err);
+		if (oldBoard == null){
+			res.send("");
+			return;
+		}
+		
+		req.boardID = req.params.boardID;
+		console.log(req.boardID);
+		res.json(oldBoard);
 	});
 });
 
-router.get('/board', /* requireLogin, */ function(req, res) {
+//default homepage for a listOfLists (empty webpage)
+/* router.get('/board', requireLogin, function(req, res) {
 	List.find(function (err, lists) {
 		if (err) return console.error(err);
 		res.render('prelloSingleBoard', {title: 'Prello'});
 	});
-});
+}); */
 
-router.post('/', function(req, res){	
-	var newList = new List(
+// add new list
+router.post('/:boardID', function(req, res){	
+/* 	var newList = new List(
 		req.body //{title: req.body.title}
 	);
 	newList.save(function(err, list){
@@ -30,11 +45,34 @@ router.post('/', function(req, res){
 		} else {
 			res.json(list);
 		}
+	}); */
+	
+	console.log("boardID: " + req.params.boardID);
+	Board.findOne({_id: req.params.boardID}, function (err, oldBoard) {
+		if (err) 
+			return console.error(err);
+		if (oldBoard == null){
+			res.send("");
+			return;
+		}
+		oldBoard.list.push(
+			req.body
+		);
+		
+		oldBoard.save(function(err, board){
+		if(err){
+			console.log(err);
+		} else {
+			res.json(board.list[board.list.length - 1]);
+		}
+		});
+		
 	});
 });
 
-router.patch('/:listID', function(req, res) {
-	List.findOne({ _id:  req.params.listID}, function (err, oldList) {
+// change current list
+router.patch('/:boardID/:listID', function(req, res) {
+/* 	List.findOne({ _id:  req.params.listID}, function (err, oldList) {
 		if (err) 
 			return console.error(err);
 		if (oldList == null){
@@ -50,11 +88,32 @@ router.patch('/:listID', function(req, res) {
 				res.json(list);
 			}
 		});
+	}); */
+	Board.findOne({_id: req.params.boardID}, function (err, oldBoard) {
+		if (err) 
+			return console.error(err);
+		if (oldBoard == null){
+			res.send("");
+			return;
+		}
+		
+		var oldList = oldBoard.list.id(req.params.listID);
+		Object.assign(oldList, req.body);
+		
+		oldBoard.save(function(err, newBoard){
+		if(err){
+			console.log(err);
+		} else {
+			res.json(newBoard.list.id(req.params.listID));
+		}
+		});
+		
 	});
 });
 
-router.delete('/:listID', function(req, res) {
-	List.findOne({ _id:  req.params.listID}, function (err, oldList) {
+// delete current list
+router.delete('/:boardID/:listID', function(req, res) {
+/* 	List.findOne({ _id:  req.params.listID}, function (err, oldList) {
 		if (err) 
 			return console.error(err);
 		if (oldList == null){
@@ -62,22 +121,39 @@ router.delete('/:listID', function(req, res) {
 			return;
 		}
 		oldList.remove();
+	}); */
+	Board.findOne({_id: req.params.boardID}, function (err, oldBoard) {
+		if (err) 
+			return console.error(err);
+		if (oldBoard == null){
+			res.send("");
+			return;
+		}
+		
+		oldBoard.list.pull(req.params.listID);
+		
+		oldBoard.save(function(err, newBoard){
+		if(err){
+			console.log(err);
+		} else {
+			//res.json(newBoard.list.id(req.params.listID));
+			res.send("");
+		}
+		});
 	});
-	res.send(""); //status for HTTP ok
+	
 });
 
 /* Cards */
 //create new card
-router.post('/:listID/card', function(req, res){
-	List.findOne({ _id: req.params.listID}, function (err, oldList) {
+router.post('/:boardID/:listID/card', function(req, res){
+/* 	List.findOne({ _id: req.params.listID}, function (err, oldList) {
 		if (err) 
 			return console.error(err);
 		if (oldList == null){
 			res.send("");
 			return;
 		}
-		
-		console.log("username: " + req.user.username);
 		
 		//add new empty card
 		oldList.cards.push(
@@ -97,12 +173,39 @@ router.post('/:listID/card', function(req, res){
 				res.json(list);
 			}
 		});
+	}); */
+	
+	Board.findOne({_id: req.params.boardID}, function (err, oldBoard) {
+		if (err) 
+			return console.error(err);
+		if (oldBoard == null){
+			res.send("");
+			return;
+		}
+		
+		var temp = oldBoard.list.id(req.params.listID);
+		temp.cards.push({
+			title: req.body.title ||  "",
+			description: req.body.description || "",
+			labels: req.body.labels || [],
+			author: req.user.username || ""
+		});
+		
+		oldBoard.save(function(err, newBoard){
+		if(err){
+			console.log(err);
+		} else {
+			//res.json(newBoard.list.id(req.params.listID));
+			res.send(newBoard);
+		}
+		});
 	});
+	
 });
 
 //modify card
-router.patch('/:listID/card/:cardID', function(req, res) {
-	List.findOne({ _id:  req.params.listID}, function (err, oldList) {
+router.patch('/:boardID/:listID/card/:cardID', function(req, res) {
+/* 	List.findOne({ _id:  req.params.listID}, function (err, oldList) {
 		if (err) 
 			return console.error(err);
 		if (oldList == null){
@@ -118,11 +221,30 @@ router.patch('/:listID/card/:cardID', function(req, res) {
 				res.json(list);
 			}
 		});		
+	}); */
+	Board.findOne({_id: req.params.boardID}, function (err, oldBoard) {
+		if (err) 
+			return console.error(err);
+		if (oldBoard == null){
+			res.send("");
+			return;
+		}
+		
+		var currentList = oldBoard.list.id(req.params.listID);
+		Object.assign(currentList.cards.id(req.params.cardID), req.body);
+		
+		oldBoard.save(function(err, newBoard){
+		if(err){
+			console.log(err);
+		} else {
+			res.send(newBoard);
+		}
+		});
 	});
 });
 
-router.delete('/:listID/card/:cardID', function(req, res) {
-	List.findOne({ _id:  req.params.listID}, function (err, oldList) {
+router.delete('/:boardID/:listID/card/:cardID', function(req, res) {
+/* 	List.findOne({ _id:  req.params.listID}, function (err, oldList) {
 		//error checking
 		if (err) 
 			return console.error(err);
@@ -138,13 +260,32 @@ router.delete('/:listID/card/:cardID', function(req, res) {
 				res.send("");
 			}
 		});
+	}); */
+	Board.findOne({_id: req.params.boardID}, function (err, oldBoard) {
+		if (err) 
+			return console.error(err);
+		if (oldBoard == null){
+			res.send("");
+			return;
+		}
+		
+		var currentList = oldBoard.list.id(req.params.listID);
+		currentList.cards.pull(req.params.cardID);
+		
+		oldBoard.save(function(err, newBoard){
+		if(err){
+			console.log(err);
+		} else {
+			res.send("");
+		}
+		});
 	});
 });
 
 /* Comments */
 //create comment
-router.post('/:listID/card/:cardID/comment', function(req, res) {
-	List.findOne({ _id:  req.params.listID}, function (err, oldList) {
+router.post('/:boardID/:listID/card/:cardID/comment', function(req, res) {
+	/* List.findOne({ _id:  req.params.listID}, function (err, oldList) {
 		if (err) 
 			return console.error(err);
 		if (oldList == null){
@@ -166,6 +307,32 @@ router.post('/:listID/card/:cardID/comment', function(req, res) {
 				res.json(list);
 			}
 		});		
+	}); */
+	Board.findOne({_id: req.params.boardID}, function (err, oldBoard) {
+		if (err) 
+			return console.error(err);
+		if (oldBoard == null){
+			res.send("");
+			return;
+		}
+		
+		var temp = oldBoard.list.id(req.params.listID);
+		console.log(temp.cards.id(req.params.cardID));
+		
+		temp.cards.id(req.params.cardID).comments.push({
+			"author": req.session.user.username || "UNDEFINED_USER, USER MUST lOG IN FIRST",
+			"comment": req.body.comment,
+			"date": req.body.date
+		});
+		
+		oldBoard.save(function(err, newBoard){
+		if(err){
+			console.log(err);
+		} else {
+			//res.json(newBoard.list.id(req.params.listID));
+			res.send(newBoard);
+		}
+		});
 	});
 });
 
