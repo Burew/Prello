@@ -1,9 +1,10 @@
 function requireLogin (req, res, next) {
-  if (!req.user) {
-    res.redirect('/');
-  } else {
-    next();
-  }
+	console.log("Require Login checked, " + req.user.username);
+	if (!req.user) {
+		res.redirect('/');
+	} else {
+		next();
+	}
 };
 
 module.exports = requireLogin;

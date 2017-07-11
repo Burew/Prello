@@ -54,6 +54,8 @@ $(function() {
 			listCards[listCards.length] = json;
 			console.log("List successfully created");
 			
+			//set data-list-id attr and add to list view
+			newLi.attr("data-list-id", listCards[listCards.length - 1]._id);
 			newLi.html("<div>" + newListValue + "<span class='close close-list'>×</span></div><ul class=inner-list><li><button class=add-card-button type=button>Add a card</button></ul>");	
 			addListForm.parents(".outer-list > li").before(newLi);
 		});

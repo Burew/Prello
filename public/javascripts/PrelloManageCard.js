@@ -86,16 +86,17 @@ $(function(){
 	
 	
 	//remove card
-	/*
-	outerList.on( "click", ".inner-list button:not(.add-card-button)", function(event) {
+	
+/* 	outerList.on( "click", ".inner-list button:not(.add-card-button)", function(event) {
 		var currentButton = $(event.target);		
 		
 		var cardID = currentButton.parent().attr("data-card-id");
 		var listIndex = map[cardID].listIndex;
 		var cardIndex = map[cardID].cardIndex;
 		
-		$.ajax({
-			url: "http://localhost:3000/list/"+ listCards[listIndex]._id +"/card/" + listCards[listIndex].cards[cardIndex]._id,
+		$.ajax({	
+			///:boardID/:listID/card/:cardID
+			url: "http://localhost:3000/list/" + currentBoardID + "/" + listCards[listIndex]._id +"/card/" + listCards[listIndex].cards[cardIndex]._id,
 			data: {
 			},
 			type: "DELETE",	 		// Whether this is a POST or GET request
@@ -110,8 +111,8 @@ $(function(){
 		
 		//get parent, since the button was clicked and we want to remove the li (parent)
 		currentButton.parent().remove(); 
-	});
-	*/
+	}); */
+	
 	
 	
 	// view or change card 

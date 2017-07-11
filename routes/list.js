@@ -322,7 +322,7 @@ router.post('/:boardID/:listID/card/:cardID/comment', function(req, res) {
 		console.log(temp.cards.id(req.params.cardID));
 		
 		temp.cards.id(req.params.cardID).comments.push({
-			"author": req.session.user.username || "UNDEFINED_USER, USER MUST lOG IN FIRST",
+			"author": req.session.user.username,
 			"comment": req.body.comment,
 			"date": req.body.date
 		});

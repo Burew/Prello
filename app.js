@@ -13,7 +13,9 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var lists = require('./routes/list');
 var boards = require('./routes/board');
-var singleBoard = require('./routes/prelloSingleBoard');
+var checkBoardAccess = require('./routes/checkBoardAccess');
+var requireLogin = require('./routes/requireLogin');
+/* var singleBoard = require('./routes/prelloSingleBoard'); */
 
 mongoose.connect('mongodb://localhost/test');
 
@@ -41,11 +43,11 @@ app.use(session({ //session
   ephemeral: true
 }));
 
+//set sessions
 app.use(function(req, res, next) {
   if (req.session && req.session.user) {
     User.findOne({ username: req.session.user.username}, function(err, user) {
       if (user) {
-		console.log("User session successful!");
         req.user = user;
         delete req.user.password; // delete the password from the session
         req.session.user = user;  //refresh the session value
@@ -61,9 +63,9 @@ app.use(function(req, res, next) {
 
 app.use('/', index);
 app.use('/users', users); 	//processing user data, sending to main dashboard(of boards)
-app.use('/board', boards);	//processes board stuff (select, insert , delete)
-app.use('/list', lists);	//api stuff
-app.use('/singleBoard', singleBoard);
+app.use('/board', requireLogin, boards);	//processes board stuff (select, insert , delete)
+app.use('/list', requireLogin, lists);	//api stuff
+// app.use('/singleBoard', singleBoard);
 
 // catch 404 and forward to error handler 
 app.use(function(req, res, next) {

@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	//load labels
-	var labels = ["#B04632", "#D29034", "#F2D600", "#61BD4F", "#0079BF", "darkviolet", "C377E0"]
+	var labels = ["#B04632", "#D29034", "#F2D600", "#61BD4F", "#0079BF", "darkviolet", "#C377E0"]
 	for (var i=0; i< labels.length; i++){
 	  var newDiv = $("<div/>");
 	  newDiv.addClass("select-color-label-big");

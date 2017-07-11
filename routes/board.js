@@ -1,22 +1,25 @@
 var express = require('express');
 var mongoose = require('mongoose');
+
 var Board = require('../models/board');
+var User = require('../models/user');
+
 var requireLogin = require('./requireLogin');
+var checkBoardAccess = require('./checkBoardAccess');
 
 var router = express.Router();
 
-//get all boards (loading board page)
+//get all boards that belong to a user
 router.get('/', function(req, res, next) { 
-	console.log("GET /board");
-	Board.find(function (err, boards) {
+	Board.find({users: req.user.username}, function (err, boards) {
 		if (err) return console.error(err);
 		res.json(boards);
 	});
 });
 
 //get single board
-router.get('/:boardID', function(req, res, next) { 
-	console.log("GET /board/" + req.params.boardID);
+router.get('/:boardID', checkBoardAccess, function(req, res, next) { 
+	//console.log("GET /board/" + req.params.boardID);
 	Board.findOne({_id: req.params.boardID}, function (err, oldBoard) {
 		if (err) 
 			return console.error(err);
@@ -24,21 +27,19 @@ router.get('/:boardID', function(req, res, next) {
 			res.send("");
 			return;
 		}
-		//TODO: keep track of boardID for lists
 		res.render('prelloSingleBoard', {title: 'Prello', currentBoardID: req.params.boardID});
-		//res.redirect("/list/board");
 	});
 });	
 
 //add new board
 router.post('/', function(req, res, next) { 
-	console.log("POST /board");
 	var newBoard = new Board(
 		/* req.body */
 		{ 
 			title: req.body.title,
 			list: req.body.list, 
-			userIDs:[req.user._id] //init to current user
+			author: req.user.username,
+			users:[req.user.username] //init to current user
 		}
 	);
 	newBoard.save(function(err, board){
@@ -50,10 +51,47 @@ router.post('/', function(req, res, next) {
 	});
 });
 
-//change board -- add users?
-//replaces content of entire board
-router.patch('/:boardID', function(req, res) {
-	console.log("PATCH /board/" + req.params.boardID);
+//add new user
+router.post('/:boardID/addNewUser', checkBoardAccess, function(req, res, next) { 
+	Board.findOne({_id: req.params.boardID}, function (err, oldBoard) {
+		if (err) 
+			return console.error(err);
+		if (oldBoard == null){
+			res.json([]);
+			return;
+		}	
+		
+		//add new user to board  req.user?
+		User.findOne( {$or: [{username: req.body.username}, {email: req.body.email}] },
+		function (err, newUser) {
+			console.log("newUser:" + newUser);
+			
+			if (newUser == null){
+				res.json([]);
+				return;
+			}
+			
+			//need to check for dup
+			if (oldBoard.users.includes(newUser.username) == false){
+				oldBoard.users.push(newUser.username);
+				
+				oldBoard.save(function(err, board){
+					if(err){
+						console.log(err);
+					} else {
+						res.json(board);
+					}
+				});
+			}
+			else {
+				res.json([]);
+			}
+		});
+	});
+});
+
+//change board - replaces content of entire board
+router.patch('/:boardID', checkBoardAccess, function(req, res) {
 	Board.findOne({_id: req.params.boardID}, function (err, oldBoard) {
 		if (err) 
 			return console.error(err);
@@ -73,8 +111,7 @@ router.patch('/:boardID', function(req, res) {
 	});
 });
 
-router.delete('/:boardID', function(req, res) {
-	console.log("DELETE /board/" + req.params.boardID);
+router.delete('/:boardID', checkBoardAccess, function(req, res) {
 	Board.findOne({_id: req.params.boardID}, function (err, oldBoard) {
 		if (err) 
 			return console.error(err);
@@ -86,10 +123,5 @@ router.delete('/:boardID', function(req, res) {
 	});
 	res.send("");
 });
-
-/* //route to a single board
-router.get('/singleBoard', function(req, res, next) {
-	res.render('prelloSingleBoard', { title: 'Single Board', error:''});
-}); */
 
 module.exports = router;

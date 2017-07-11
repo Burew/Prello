@@ -4,9 +4,9 @@ var User = require('../models/user');
 var router = express.Router();
 
 /* GET users listing. */
-router.get('/', function(req, res) {
+/* router.get('/', function(req, res) {
   res.send('literally nothing to see here');
-});
+}); */
 
 //create new user
 router.post('/', function(req, res) { 
@@ -17,7 +17,7 @@ router.post('/', function(req, res) {
 		if(err){
 			console.log(err);
 		} else {
-			res.json(user);
+			res.render('prelloDashboard', { title: 'DashBoard', error: "User Successfully created"});
 		}
 	});
 });
@@ -31,11 +31,11 @@ router.post('/confirm', function(req, res) {
 								error: 'Username does not exist' });
 			
 		} else {
-			if (req.body.username === user.username && req.body.password === user.password) {
+			if (req.body.username === user.username && req.body.password === user.password){
 				req.session.user = user;
-				res.render('prelloDashboard', { title: 'DashBoard'});
+				res.render('prelloDashboard', { title: 'DashBoard', error: ""});
 				} else {
-				res.render('index',{title: 'Prello' , 
+				res.render('index', {title: 'Prello', 
 								style:'stylesheets/singleBoardStylesheet.css', 
 								error: 'Invalid email or password, please try again' });
 			}
