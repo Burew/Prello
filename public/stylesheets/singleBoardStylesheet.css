@@ -151,11 +151,8 @@ ul{
 .inner-list li{
     width: 100%;
     display: block;
-    /*
-	padding: 30px 30px; 
-    margin: 30px 0;
-	*/
     margin: 5px 0;
+	position: relative;
 }
 
 .inner-list li a{
@@ -352,6 +349,14 @@ ul{
     padding-right: 5px;
     z-index: 1;
 }
+
+.close.del-card {
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 5px;
+}
+
 
 #add-list-form{
 	display: none;

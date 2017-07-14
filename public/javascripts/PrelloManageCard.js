@@ -44,41 +44,7 @@ $(function(){
 		//talk to server, get list first to find correct place to insert card
 		//post to create, patch to update w/ relevant fields
 		var serverResponse;
-/* 		$.ajax({
-			url: "http://localhost:3000/list/" + currentBoardID + "/" + listID +"/card",
-			data: {},
-			type: "POST",	 		
-			dataType : "json" 		
-		}).done(function( json ){
-			serverResponse = json;
-			cards = serverResponse.cards;
-			cardID = cards[cards.length - 1]._id;
 
-			//patch w/ cardID to change, add labels here later
-			$.ajax({
-				url: "http://localhost:3000/list/" + currentBoardID + "/" + listID +"/card/" + cardID,
-				data: {
-					"_id": cardID,
-					"title": card_title},
-				type: "PATCH",	 		
-				dataType : "json" 		
-			}).done(function( json ){
-				//update internal data structures with server response
-				var i = findListIndex(listID);			
-				listCards[i] = json;
-				map[cardID] = {listIndex:i, cardIndex:cards.length - 1};
-			});
-			
-			//create new element, fill in data
-			var newLi = $("<li/>");
-			newLi.attr("data-card-id", cardID);
-			newLi.html("<button type='button'>" + card_title +"</button>");
-			
-			//get current list and insert
-			var innerListLi = $(currentCard).parent();  //insert-card <li>
-			innerListLi.before(newLi);
-		}); */
-		
 		$.ajax({
 			url: "http://localhost:3000/list/" + currentBoardID + "/" + listID +"/card",
 			data: {"title": card_title},
@@ -88,9 +54,9 @@ $(function(){
 /*			serverResponse = json;
 			cards = serverResponse.cards;
 			cardID = cards[cards.length - 1]._id;
-			
+
 			//update internal data structures with server response
-			var i = findListIndex(listID);			
+			var i = findListIndex(listID);
 			listCards[i] = json;
 			map[cardID] = {listIndex:i, cardIndex:cards.length - 1};
 			
@@ -113,32 +79,33 @@ $(function(){
 	
 	
 	//remove card
-	
-/* 	outerList.on( "click", ".inner-list button:not(.add-card-button)", function(event) {
+ 	outerList.on( "click", ".del-card", function(event) {
 		var currentButton = $(event.target);		
 		
 		var cardID = currentButton.parent().attr("data-card-id");
+		console.log("FrontEnd: Delete Card");
+		console.log(currentButton);
+		console.log(cardID);
 		var listIndex = map[cardID].listIndex;
 		var cardIndex = map[cardID].cardIndex;
 		
 		$.ajax({	
 			///:boardID/:listID/card/:cardID
 			url: "http://localhost:3000/list/" + currentBoardID + "/" + listCards[listIndex]._id +"/card/" + listCards[listIndex].cards[cardIndex]._id,
-			data: {
-			},
-			type: "DELETE",	 		// Whether this is a POST or GET request
-			dataType : "json", 		// The type of data we expect back
+			data: {},
+			type: "DELETE",
+			dataType : "json",
 		}).done(function( json ){
 			//update internal data structures;
+			/*
 			delete map[cardID];
-			console.log(listCards[listIndex].cards);
 			listCards[listIndex].cards.splice(cardIndex, 1);
-			console.log(listCards[listIndex].cards);
+			*/
 		});
 		
 		//get parent, since the button was clicked and we want to remove the li (parent)
-		currentButton.parent().remove(); 
-	}); */
+		//currentButton.parent().remove();
+	});
 	
 	
 	
@@ -149,6 +116,7 @@ $(function(){
 		
 		var currentButton = $(event.target);
 		var cardID = currentButton.parent().attr("data-card-id");
+		console.log("CardID: " + cardID);
 		var listIndex = map[cardID].listIndex;
 		var cardIndex = map[cardID].cardIndex;
 		

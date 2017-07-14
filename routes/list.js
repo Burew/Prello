@@ -40,7 +40,8 @@ router.post('/:boardID', function(req, res){
 			console.log(err);
 		} else {
 			socketObject.getInstance().to(req.params.boardID).emit('addList', board.list[board.list.length - 1]);
-			res.json(board.list[board.list.length - 1]);
+			res.send("");
+			//res.json(board.list[board.list.length - 1]);
 		}
 		});
 		
@@ -87,7 +88,8 @@ router.delete('/:boardID/:listID', function(req, res) {
 		if(err){
 			console.log(err);
 		} else {
-			//res.json(newBoard.list.id(req.params.listID));
+            socketObject.getInstance().to(req.params.boardID).emit('delList',
+                {'listID': req.params.listID});
 			res.send("");
 		}
 		});
@@ -107,13 +109,13 @@ router.post('/:boardID/:listID/card', function(req, res){
 		}
 		
 		var temp = oldBoard.list.id(req.params.listID);
-		console.log(temp);
+		//console.log(temp);
 		temp.cards.push({
 			title: req.body.title ||  "",
 			description: req.body.description || "",
 			labels: req.body.labels || [],
 			author: req.user.username || "",
-			comments: req.user.comments || ""
+			comments: req.user.comments || []
 		});
 		
 		oldBoard.save(function(err, newBoard){
@@ -122,14 +124,15 @@ router.post('/:boardID/:listID/card', function(req, res){
 		} else {
 			var cards = newBoard.list.id(req.params.listID).cards;
 			var cardsLen = cards.length;
-			console.log(cards[cardsLen-1]);
-            socketObject.getInstance().emit('addNewCard',
-                {"cardID": cards[cardsLen-1]._id,
-                    "listID" : req.params.listID,
-                    "card_title": cards[cardsLen-1].title});
-			
-			res.json(newBoard.list.id(req.params.listID));
-			
+			//console.log(cards[cardsLen-1]);
+            // socketObject.getInstance().to(req.params.boardID).emit('addCard',
+             //    {"cardID": cards[cardsLen-1]._id,
+             //        "listID" : req.params.listID,
+             //        "card_title": cards[cardsLen-1].title});
+            //res.json(newBoard.list.id(req.params.listID));
+
+            socketObject.getInstance().to(req.params.boardID).emit('addCard', newBoard.list.id(req.params.listID));
+			res.send("");
 		}
 		});
 	});
@@ -153,13 +156,13 @@ router.patch('/:boardID/:listID/card/:cardID', function(req, res) {
 		if(err){
 			console.log(err);
 		} else {
-			//res.send(newBoard);
 			res.json(newBoard.list.id(req.params.listID));
 		}
 		});
 	});
 });
 
+//delete card
 router.delete('/:boardID/:listID/card/:cardID', function(req, res) {
 	Board.findOne({_id: req.params.boardID}, function (err, oldBoard) {
 		if (err) 
@@ -176,6 +179,8 @@ router.delete('/:boardID/:listID/card/:cardID', function(req, res) {
 		if(err){
 			console.log(err);
 		} else {
+            socketObject.getInstance().to(req.params.boardID).emit('delCard',
+                {"cardID": req.params.cardID, "listID": req.params.listID});
 			res.send("");
 		}
 		});
@@ -194,7 +199,7 @@ router.post('/:boardID/:listID/card/:cardID/comment', function(req, res) {
 		}
 		
 		var temp = oldBoard.list.id(req.params.listID);
-		console.log(temp.cards.id(req.params.cardID));
+		//console.log(temp.cards.id(req.params.cardID));
 		
 		temp.cards.id(req.params.cardID).comments.push({
 			"author": req.session.user.username,

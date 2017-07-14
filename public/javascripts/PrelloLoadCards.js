@@ -119,8 +119,12 @@ $(function(){
 		  //render labels
 		  var displayLabelsDiv = $('<div/>').addClass("display-labels-div");
 		  renderLabels(card.labels, displayLabelsDiv);
-		  cardLi.append(displayLabelsDiv); 
-		  
+		  cardLi.append(displayLabelsDiv);
+
+		  //add close button
+		  var closeCardDiv = $('<div/>').addClass("close del-card").html("&times");
+		  cardLi.append(closeCardDiv);
+
 		  map[card._id] = {listIndex, cardIndex}; //listIndex, cardIndex;
 		  cardLi.append('<button type="button">'+ card.title +'</button>');
 		  cardsUl.append(cardLi); 

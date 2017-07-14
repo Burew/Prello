@@ -17,7 +17,9 @@ $(function() {
 			type: "DELETE",	 
 			dataType : "json", 
 		});
-		
+
+		//socket will update view, data structure
+
 		//delete list in data structure, and in HTML 
 		// listCards.splice(findListIndex(listID), 1);
 		// $(removeThis).remove();

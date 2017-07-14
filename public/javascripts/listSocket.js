@@ -8,40 +8,75 @@ $(function() {
 		console.log("currentBoardID not defined");
 	}
 
-	socket.on('addNewCard', function(data) {
-		console.log("New card socket received");
+	socket.on('addCard', function(data) {
+		console.log("Socket: add card");
+
+		 //update map, but not listCards
+		var i = findListIndex(data._id);
+        var cards = data.cards;
+        var cardID = cards[cards.length - 1]._id;
+
+        listCards[i] = data;
+		map[cardID] = {listIndex:i, cardIndex: listCards[i].cards.length - 1};
 
 		var newLi = $("<li/>");
-		newLi.attr("data-card-id", data.cardID);
-		newLi.html("<button type='button'>" + data.card_title +"</button>");
+		newLi.attr("data-card-id", cardID);
+
+        //add close button, label div
+        var displayLabelsDiv = $('<div/>').addClass("display-labels-div");
+        var closeCardDiv = $('<div/>').addClass("close del-card").html("&times");
+        newLi.append(displayLabelsDiv, closeCardDiv);
+
+        //add card button
+		newLi.append("<button type='button'>" + data.cards[cards.length - 1].title +"</button>");
 
 		//get current list and insert
-		var currentList = $("li[data-list-id=" + data.listID + "]");
-		currentList.find("[data-card-id]").last().after(newLi);
+		var currentList = $("li[data-list-id=" + data._id + "]");
+		currentList.find("li").last().before(newLi);
+
 	});
+
+    socket.on('delCard', function(data) {
+        console.log("Socket: del card");
+        console.log(data);
+        var cardID = data.cardID;
+        var currentCard = $(`li[data-card-id=${data.cardID}]`);
+
+        var listIndex =  $(`li[data-list-id=${data.listID}]`).index();//map[cardID].listIndex;
+        var cardIndex = currentCard.index(); //map[cardID].cardIndex;
+
+        //update view
+        //$(`li[data-card-id=${cardID}]`).remove();
+        currentCard.remove();
+
+		//update local data structures
+        delete map[data.cardID];
+        listCards[listIndex].cards.splice(cardIndex, 1);
+
+    });
 
 	socket.on('addList', function(data){
 		listCards[listCards.length] = data;
-		console.log("List socket received");
+		console.log("Socket: add list");
 
 		var newLi = $("<li/>");
 
 		//set data-list-id attr and add to list view
 		newLi.attr("data-list-id", listCards[listCards.length - 1]._id);
 		newLi.html("<div>" + listCards[listCards.length - 1].title + "<span class='close close-list'>×</span></div><ul class=inner-list><li><button class=add-card-button type=button>Add a card</button></ul>");
-		$("li[data-list-id]").last().after(newLi);
+        $('.outer-list').children('li:last').before(newLi);
 	});
 
     socket.on('delList', function(data){
+    	console.log('Socket: del list');
     	//update data structure
         listCards.splice(findListIndex(data.listID), 1);
         //update view
-        $('li[data-boardid=' + data.listID + ']').remove();
+        $(`li[data-list-id=${data.listID}]`).remove();
     });
 
 	//close socket when user navigates away
 	$(window).on('unload', function(){
-		alert("window closing");
 		socket.close();
 	});
 
