@@ -87,7 +87,7 @@ input[type=button], input[type=submit], input[type=reset]{
 
 body{
   overflow: scroll;
-  /* white-space: nowrap; */
+  white-space: nowrap;
   margin: 0;
   margin-top: 50px;
 }

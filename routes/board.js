@@ -6,6 +6,7 @@ var User = require('../models/user');
 
 var requireLogin = require('./requireLogin');
 var checkBoardAccess = require('./checkBoardAccess');
+var socketObject = require('./socketObject.js');
 
 var router = express.Router();
 
@@ -27,6 +28,8 @@ router.get('/:boardID', checkBoardAccess, function(req, res, next) {
 			res.send("");
 			return;
 		}
+
+
 		res.render('prelloSingleBoard', {title: 'Prello', currentBoardID: req.params.boardID});
 	});
 });	
@@ -42,10 +45,12 @@ router.post('/', function(req, res, next) {
 			users:[req.user.username] //init to current user
 		}
 	);
+	
 	newBoard.save(function(err, board){
 		if(err){
 			console.log(err);
 		} else {
+			//socketObject.getInstance().emit('Board message', "Socket info: New Board Added");
 			res.json(board);
 		}
 	});

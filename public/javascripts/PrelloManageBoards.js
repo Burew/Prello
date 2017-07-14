@@ -7,7 +7,7 @@ $(function(){
 		boardLI.find(".add-new-board-form-text").css("display", "none");
 		boardLI.find(".add-new-board-form").css("display", "block");
 	});
-	
+
 	//add boards
 	$(".board-collection").on("submit", ".add-new-board-form", function(event){
 		event.preventDefault();
@@ -18,7 +18,7 @@ $(function(){
 		var newBoardValue = boardForm.find("input[name=newBoardName]").val();
 	
 		let addBoardURL = "http://localhost:3000/board";
-		
+
 		console.log(`new board value: ${newBoardValue}`);
 		//talk to server
 		$.ajax({
@@ -63,7 +63,8 @@ $(function(){
 		}).done(function( json ){
 			//delete from view once ajax done
 			//TODO: AJAX does not send response
-			//do not need to update local data struct --- all references to boardID removed...
+			//Need to update local data struct
+			// -- add board after this delete becomes funky otherwise
 		});
 		
 		currentBoard.remove();

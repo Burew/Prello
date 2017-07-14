@@ -1,8 +1,8 @@
 function requireLogin (req, res, next) {
-	console.log("Require Login checked, " + req.user.username);
 	if (!req.user) {
-		res.redirect('/');
+		res.redirect('/'); //redir to homepage
 	} else {
+        console.log("Require Login checked, " + req.user.username);
 		next();
 	}
 };

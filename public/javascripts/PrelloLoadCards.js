@@ -122,7 +122,7 @@ $(function(){
 		  cardLi.append(displayLabelsDiv); 
 		  
 		  map[card._id] = {listIndex, cardIndex}; //listIndex, cardIndex;
-		  cardLi.append('<button type="button">'+ card.description +'</button>');
+		  cardLi.append('<button type="button">'+ card.title +'</button>');
 		  cardsUl.append(cardLi); 
 		}
 		

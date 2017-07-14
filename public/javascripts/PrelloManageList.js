@@ -19,8 +19,8 @@ $(function() {
 		});
 		
 		//delete list in data structure, and in HTML 
-		listCards.splice(findListIndex(listID), 1);
-		$(removeThis).remove();
+		// listCards.splice(findListIndex(listID), 1);
+		// $(removeThis).remove();
 	});
 		
 	/*------------------------------- message events -------------------------------*/
@@ -35,8 +35,7 @@ $(function() {
 	//if user submits form, add a new list before the addList element
 	addListForm.on("submit", function(event){
 		event.preventDefault();
-		//create new node - new list item w/ stuff inside
-		var newLi = $("<li/>");
+
 			
 		//get value of list
 		var newListValue = addListForm.children("input[name=listName]").val(); 
@@ -51,13 +50,16 @@ $(function() {
 			dataType : "json" 		
 		}).done(function(json){
 			//assign new list to local data stucture using data returned by server
-			listCards[listCards.length] = json;
+/* 			listCards[listCards.length] = json;
 			console.log("List successfully created");
+			
+			//create new node - new list item w/ stuff inside
+			var newLi = $("<li/>");
 			
 			//set data-list-id attr and add to list view
 			newLi.attr("data-list-id", listCards[listCards.length - 1]._id);
 			newLi.html("<div>" + newListValue + "<span class='close close-list'>×</span></div><ul class=inner-list><li><button class=add-card-button type=button>Add a card</button></ul>");	
-			addListForm.parents(".outer-list > li").before(newLi);
+			addListForm.parents(".outer-list > li").before(newLi); */
 		});
 		
 		

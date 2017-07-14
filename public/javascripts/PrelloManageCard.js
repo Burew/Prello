@@ -1,6 +1,7 @@
-var currentList
+var currentList;
+var currentCard;
 $(function(){
-	var currentCard;
+	
 	var outerList = $(".outer-list");
 	
 	outerList.on("click", ".inner-list .add-card-button", function(event){
@@ -43,10 +44,9 @@ $(function(){
 		//talk to server, get list first to find correct place to insert card
 		//post to create, patch to update w/ relevant fields
 		var serverResponse;
-		$.ajax({
+/* 		$.ajax({
 			url: "http://localhost:3000/list/" + currentBoardID + "/" + listID +"/card",
-			data: {
-			},
+			data: {},
 			type: "POST",	 		
 			dataType : "json" 		
 		}).done(function( json ){
@@ -59,7 +59,7 @@ $(function(){
 				url: "http://localhost:3000/list/" + currentBoardID + "/" + listID +"/card/" + cardID,
 				data: {
 					"_id": cardID,
-					"description": card_title},
+					"title": card_title},
 				type: "PATCH",	 		
 				dataType : "json" 		
 			}).done(function( json ){
@@ -77,7 +77,34 @@ $(function(){
 			//get current list and insert
 			var innerListLi = $(currentCard).parent();  //insert-card <li>
 			innerListLi.before(newLi);
+		}); */
+		
+		$.ajax({
+			url: "http://localhost:3000/list/" + currentBoardID + "/" + listID +"/card",
+			data: {"title": card_title},
+			type: "POST",	 		
+			dataType : "json" 		
+		}).done(function( json ){
+/*			serverResponse = json;
+			cards = serverResponse.cards;
+			cardID = cards[cards.length - 1]._id;
+			
+			//update internal data structures with server response
+			var i = findListIndex(listID);			
+			listCards[i] = json;
+			map[cardID] = {listIndex:i, cardIndex:cards.length - 1};
+			
+ 			//create new element, fill in data
+			var newLi = $("<li/>");
+			newLi.attr("data-card-id", cardID);
+			newLi.html("<button type='button'>" + card_title +"</button>");
+			
+			//get current list and insert
+			var innerListLi = $(currentCard).parent();  //insert-card <li>
+			innerListLi.before(newLi); */
 		});
+		
+		
 		
 		//reset form modal
 		$(".close-modal").click();		

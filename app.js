@@ -16,6 +16,7 @@ var boards = require('./routes/board');
 var checkBoardAccess = require('./routes/checkBoardAccess');
 var requireLogin = require('./routes/requireLogin');
 /* var singleBoard = require('./routes/prelloSingleBoard'); */
+var io = require('./routes/socketObject.js');
 
 mongoose.connect('mongodb://localhost/test');
 
