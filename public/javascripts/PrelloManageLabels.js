@@ -15,10 +15,13 @@ $(document).ready(function(){
 	$("#add-labels-button").on("click", function(){
 		$(".select-color-view").css("display", "block");
 		//add checks to active labels
-		
+
 		var cardID = $("#cardModal").attr("data-card-id");
-		var listIndex = map[cardID].listIndex;
-		var cardIndex = map[cardID].cardIndex;
+        var currentCard = $(`li[data-card-id=${cardID}]`);
+        var currentList =  currentCard.parents(`li[data-list-id]`);
+        var listIndex =  currentList.index();
+        var cardIndex = currentCard.index();
+
 		var tempColors = listCards[listIndex].cards[cardIndex].labels;
 		$(".select-color-label-big").removeClass("active").find("i").css("display", "none");
 		for (var i=0; i<tempColors.length; i++){
@@ -37,11 +40,12 @@ $(document).ready(function(){
 		$("div.active").each(function(){
 			tempColors.push($(this).attr("data-bgcol"));
 		});
-		
-		var cardID = $("#cardModal").attr("data-card-id");
-		
-		var listIndex = map[cardID].listIndex;
-		var cardIndex = map[cardID].cardIndex;
+
+        var cardID = $("#cardModal").attr("data-card-id");
+        var currentCard = $(`li[data-card-id=${cardID}]`);
+        var currentList =  currentCard.parents(`li[data-list-id]`);
+        var listIndex =  currentList.index();
+        var cardIndex = currentCard.index();
 		
 		//update data
 		$.ajax({

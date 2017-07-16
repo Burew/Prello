@@ -84,10 +84,15 @@ $(function(){
 		
 		var cardID = currentButton.parent().attr("data-card-id");
 		console.log("FrontEnd: Delete Card");
-		console.log(currentButton);
 		console.log(cardID);
-		var listIndex = map[cardID].listIndex;
-		var cardIndex = map[cardID].cardIndex;
+
+        var currentCard = $(`li[data-card-id=${cardID}]`);
+        var currentList =  currentCard.parents(`li[data-list-id]`);
+        var listIndex =  currentList.index();
+        var cardIndex = currentCard.index();
+
+		// var listIndex = map[cardID].listIndex;
+		// var cardIndex = map[cardID].cardIndex;
 		
 		$.ajax({	
 			///:boardID/:listID/card/:cardID
@@ -96,13 +101,9 @@ $(function(){
 			type: "DELETE",
 			dataType : "json",
 		}).done(function( json ){
-			//update internal data structures;
-			/*
-			delete map[cardID];
-			listCards[listIndex].cards.splice(cardIndex, 1);
-			*/
+			console.log("Socket Del Card ajax done");
 		});
-		
+
 		//get parent, since the button was clicked and we want to remove the li (parent)
 		//currentButton.parent().remove();
 	});
@@ -116,9 +117,14 @@ $(function(){
 		
 		var currentButton = $(event.target);
 		var cardID = currentButton.parent().attr("data-card-id");
-		console.log("CardID: " + cardID);
-		var listIndex = map[cardID].listIndex;
-		var cardIndex = map[cardID].cardIndex;
+
+        var currentCard = $(`li[data-card-id=${cardID}]`);
+        var currentList =  currentCard.parents(`li[data-list-id]`);
+        var listIndex =  currentList.index();
+        var cardIndex = currentCard.index();
+
+		// var listIndex = map[cardID].listIndex;
+		// var cardIndex = map[cardID].cardIndex;
 		
 		//set current card for label data
 		$("#cardModal").attr("data-card-id", cardID);

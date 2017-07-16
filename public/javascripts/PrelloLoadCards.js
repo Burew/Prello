@@ -1,11 +1,13 @@
 //debugging helper functions, call printAll() to see content of local data structures
 function findListIndex(listID) {
-	for (var i = 0; i < listCards.length; i++){
-		if (listCards[i]._id == listID){
-			return i;
-		}
-	};	
-	return -1;
+	// for (var i = 0; i < listCards.length; i++){
+	// 	if (listCards[i]._id == listID){
+	// 		return i;
+	// 	}
+	// };
+	// return -1;
+
+	return $(`li[data-list-id=${listID}]`).index();
 }
 
 function printAll(){
@@ -34,19 +36,23 @@ function renderLabels(tempColors, displayLabelsDiv){
 } 
 
 function addNewComment(newComment){
-	
 	let date = new Date();
 	//modify local data structures and server 
 	var cardID = $("#cardModal").attr("data-card-id");
-	var listIndex = map[cardID].listIndex;
-	var cardIndex = map[cardID].cardIndex;
+    var currentCard = $(`li[data-card-id=${cardID}]`);
+    var currentList =  currentCard.parents(`li[data-list-id]`);
+    var listIndex =  currentList.index();
+    var cardIndex = currentCard.index();
+
+	//var listIndex = map[cardID].listIndex;
+	//var cardIndex = map[cardID].cardIndex;
 
 	//update local data structure later
 	$.ajax({
 		url: "http://localhost:3000/list/" + currentBoardID + "/" + listCards[listIndex]._id +"/card/" + listCards[listIndex].cards[cardIndex]._id +"/comment",
 		data: {
 			comment: newComment,
-			date: date.toString() //use a date string, use new Date(timestamp).toLocaleString() to read
+			date: date.toString() //use raw Date string
 		},
 		type: "POST",	 		
 		dataType : "json", 	
@@ -62,18 +68,15 @@ function renderComment(comment, date, author){
 	//generate comment block and display in card view
 	let mainDiv=$("<div/>").addClass("comment");
 
-	//comment data
+	//comment content
 	let commentDiv=$("<div/>").addClass("comment-content").html(comment);
+
 	//comment author data
 	let dataDiv=$("<div/>").addClass("comment-data");
 	let authorSpan = $("<span/>").addClass("comment-author").html(author);
-	//let timeStamp = new Date();
 	let timeSpan = $("<span/>").addClass("comment-time").html(date.toLocaleString());
-	//let dateSpan = $("<span/>").addClass("comment-date").html(date.toLocaleDateString());
 
-	//dataDiv.append("- ", authorSpan, " at " ,timeSpan, ", ", dateSpan );
 	dataDiv.append("- ", authorSpan, " at ", timeSpan);
-	
 	mainDiv.append(commentDiv, dataDiv);
 
 	//add comment, most recent first

@@ -17,7 +17,7 @@ $(function() {
         var cardID = cards[cards.length - 1]._id;
 
         listCards[i] = data;
-		map[cardID] = {listIndex:i, cardIndex: listCards[i].cards.length - 1};
+		//map[cardID] = {listIndex:i, cardIndex: listCards[i].cards.length - 1};
 
 		var newLi = $("<li/>");
 		newLi.attr("data-card-id", cardID);
@@ -39,18 +39,16 @@ $(function() {
     socket.on('delCard', function(data) {
         console.log("Socket: del card");
         console.log(data);
-        var cardID = data.cardID;
-        var currentCard = $(`li[data-card-id=${data.cardID}]`);
 
-        var listIndex =  $(`li[data-list-id=${data.listID}]`).index();//map[cardID].listIndex;
-        var cardIndex = currentCard.index(); //map[cardID].cardIndex;
+        var currentCard = $(`li[data-card-id=${data.cardID}]`);
+        var listIndex =  $(`li[data-list-id=${data.listID}]`).index();
+        var cardIndex = currentCard.index();
 
         //update view
-        //$(`li[data-card-id=${cardID}]`).remove();
         currentCard.remove();
 
 		//update local data structures
-        delete map[data.cardID];
+        //delete map[data.cardID];
         listCards[listIndex].cards.splice(cardIndex, 1);
 
     });
