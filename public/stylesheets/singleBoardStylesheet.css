@@ -63,13 +63,16 @@ input[type=button], input[type=submit], input[type=reset]{
 	background-color: #7fff7f;
 }
 
-.board-collection li a{
+.board-collection li a {
 	text-decoration: none;
 	text-align: center;
 	color: black;
 	display: inline-block;
 	width: 100%;
 	height: 100%;
+	box-sizing: border-box;
+	padding: 20px 0;
+	/* vertical-align: middle; */
 }
 
 .board-collection li:last-child {
