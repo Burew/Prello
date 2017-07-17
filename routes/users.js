@@ -33,22 +33,24 @@ router.post('/confirm', function(req, res) {
 		} else {
 			if (req.body.username === user.username && req.body.password === user.password){
 				req.session.user = user;
-				res.render('prelloDashboard', { title: 'DashBoard', error: ""});
+					//res.render('prelloDashboard', { title: 'DashBoard', error: ""});
+                	res.redirect('/board/dashboard');
 				} else {
-				res.render('index', {title: 'Prello', 
-								style:'stylesheets/singleBoardStylesheet.css', 
+					res.render('index', {title: 'Prello',
+								style:'stylesheets/singleBoardStylesheet.css',
 								error: 'Invalid email or password, please try again' });
+
 			}
 		}
 	});
 });
 	
-//user logout
-router.post('/logout', function(req, res) {
-	if (req.session){ 
-		req.session.reset();
-	}
-	res.redirect("/");
-});
+// //user logout
+// router.post('/logout', function(req, res) {
+// 	if (req.session){
+// 		req.session.reset();
+// 	}
+// 	res.redirect("/");
+// });
 
 module.exports = router;

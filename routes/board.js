@@ -10,6 +10,11 @@ var socketObject = require('./socketObject.js');
 
 var router = express.Router();
 
+//main dashboard for a user
+router.get('/dashboard', function(req, res, next) {
+    res.render('prelloDashboard', { title: 'DashBoard', error: ""});
+});
+
 //get all boards that belong to a user
 router.get('/', function(req, res, next) { 
 	Board.find({users: req.user.username}, function (err, boards) {
@@ -35,7 +40,7 @@ router.get('/:boardID', checkBoardAccess, function(req, res, next) {
 });	
 
 //add new board
-router.post('/', function(req, res, next) { 
+router.post('/', function(req, res, next) {
 	var newBoard = new Board(
 		/* req.body */
 		{ 
