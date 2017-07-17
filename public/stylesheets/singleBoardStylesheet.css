@@ -450,6 +450,12 @@ ul{
 
 
 /* reset password ------------------------------------------------------ */
+.reset{
+	width: 300px;
+	height: 100px;
+	margin: 0 auto;
+}
+
 #resetPassword , .resetPasswordConfirm{
 	width: 300px;
 	margin: 0 auto;

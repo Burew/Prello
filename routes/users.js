@@ -68,7 +68,7 @@ router.post('/resetPasswordHome', function(req, res) {
             if (err)
             	res.render('resetPasswordHome', {title:'Dashboard', error:'error w/ generating salt'});
 
-            // hash the email using our new salt
+            // hash the email using our new salt, gets new one each time
             bcrypt.hash(user.email, salt, function(err, hash) {
                 if (err)
                     res.render('resetPasswordHome', {title:'Dashboard', error:'error w/ generating hash'});
