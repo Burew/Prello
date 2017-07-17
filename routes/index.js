@@ -10,6 +10,11 @@ router.get('/dashboard', function(req, res, next) {
 	res.render('prelloDashboard', { title: 'Dashboard', error:''});
 });
  */
+
+router.get('/resetPasswordHome', function(req, res, next) {
+    res.render('resetPasswordHome', { title: 'Dashboard', error: ''});
+});
+
 router.get('/logout', function(req, res, next) {
 	if (req.session){ 
 		req.session.reset();

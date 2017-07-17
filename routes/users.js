@@ -1,4 +1,7 @@
 var express = require('express');
+var bcrypt = require('bcrypt');
+var SALT_WORK_FACTOR = 10;
+
 var User = require('../models/user');
 
 var router = express.Router();
@@ -12,12 +15,16 @@ var router = express.Router();
 router.post('/', function(req, res) { 
 	var newUser = new User(
 		req.body //{title: req.body.title}
+		// {"username" : req.body.username,
+        // "email": req.body.email,
+        // "password": "",
+        // "boardIDs": [] }
 	);
 	newUser.save(function(err, user){
 		if(err){
 			console.log(err);
 		} else {
-			res.render('prelloDashboard', { title: 'DashBoard', error: "User Successfully created"});
+            res.redirect('/board/dashboard');
 		}
 	});
 });
@@ -31,20 +38,56 @@ router.post('/confirm', function(req, res) {
 								error: 'Username does not exist' });
 			
 		} else {
-			if (req.body.username === user.username && req.body.password === user.password){
-				req.session.user = user;
-					//res.render('prelloDashboard', { title: 'DashBoard', error: ""});
-                	res.redirect('/board/dashboard');
-				} else {
-					res.render('index', {title: 'Prello',
-								style:'stylesheets/singleBoardStylesheet.css',
-								error: 'Invalid email or password, please try again' });
+            user.comparePassword(req.body.password, function(err, isMatch) {
+                if (err) throw err;
+                console.log('check hash password:', isMatch); //Password123: true
 
-			}
+				if (isMatch){
+                    req.session.user = user;
+                    //res.render('prelloDashboard', { title: 'DashBoard', error: ""});
+                    res.redirect('/board/dashboard');
+				}else {
+                    res.render('index', {title: 'Prello',
+                        style:'stylesheets/singleBoardStylesheet.css',
+                        error: 'Invalid password for Username: ' + req.body.username + ', please try again' });
+                }
+            });
 		}
 	});
 });
-	
+
+//password reset
+router.post('/resetPasswordHome', function(req, res) {
+	console.log("Password reset page loaded");
+	//check if email in database, redir to reset pswd page if successful
+    User.findOne({ email: req.body.email }, function(err, user) {
+	if (user){
+		//send to custom reset password link page
+		res.render('resetPasswordLink', { title: 'Password Reset Link', customUserLink: 'none'});
+	}
+	else {
+		//else render an error message
+		res.render('resetPasswordHome', { title: 'Dashboard', error: 'Email does not exist'});
+    }
+    });
+});
+
+//password reset
+router.get('/resetPasswordLink/:emailHash', function(req, res) {
+    console.log("Password reset page loaded");
+    //check if email in database, redir to reset pswd page if successful
+    User.findOne({ email: req.body.email }, function(err, user) {
+        if (user){
+            //send to custom reset password link page
+            res.render('resetPasswordLink', { title: 'Password Reset Link', customUserLink: 'none'});
+        }
+        else {
+            //else render an error message
+            res.render('resetPasswordHome', { title: 'Dashboard', error: 'Email does not exist'});
+        }
+    });
+});
+
 // //user logout
 // router.post('/logout', function(req, res) {
 // 	if (req.session){
