@@ -450,10 +450,14 @@ ul{
 
 
 /* reset password ------------------------------------------------------ */
-#resetPassword {
+#resetPassword , .resetPasswordConfirm{
 	width: 300px;
 	margin: 0 auto;
+	white-space: normal;
 	/* vertical-align: middle; */
+}
+
+.resetPasswordConfirm{
 }
 
 .link-button {
@@ -464,18 +468,22 @@ ul{
 	border-radius: 4px;
 }
 
-.link-button > a {
-	background-color: #2c802e;
-	box-sizing: border-box;
-	display: inline-block;
-	text-decoration: none;
-	color: black;
-	width: 100%;
-	height: 100%;
-	padding: 40px 0;
+.link-button input[type=submit] {
+	 background-color: #2c802e;
+	 box-sizing: border-box;
+	 display: inline-block;
+	 text-decoration: none;
+	 color: black;
+	 width: 100%;
+	 height: 100%;
+	 padding: 40px 0;
+ }
+
+.link-button input[type=text] {
+	display: none;
 }
 
-.link-button > a:hover {
+.link-button input[type=submit]:hover {
 	background-color: #62ee68;
 }
 

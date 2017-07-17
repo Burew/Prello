@@ -58,12 +58,33 @@ router.post('/confirm', function(req, res) {
 
 //password reset
 router.post('/resetPasswordHome', function(req, res) {
-	console.log("Password reset page loaded");
+	console.log("POST : Password reset page loaded");
 	//check if email in database, redir to reset pswd page if successful
     User.findOne({ email: req.body.email }, function(err, user) {
 	if (user){
-		//send to custom reset password link page
-		res.render('resetPasswordLink', { title: 'Password Reset Link', customUserLink: 'none'});
+
+        // generate a salt
+        bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+            if (err)
+            	res.render('resetPasswordHome', {title:'Dashboard', error:'error w/ generating salt'});
+
+            // hash the email using our new salt
+            bcrypt.hash(user.email, salt, function(err, hash) {
+                if (err)
+                    res.render('resetPasswordHome', {title:'Dashboard', error:'error w/ generating hash'});
+
+                console.log("new hash link is: " + hash);
+                //send to custom reset password link page
+                res.render('resetPasswordLink',
+					{
+						title: 'Password Reset Link',
+						email: user.email,
+						customUserLink: '/users/resetPasswordLink/' + hash
+					});
+
+            });
+        });
+
 	}
 	else {
 		//else render an error message
@@ -72,18 +93,49 @@ router.post('/resetPasswordHome', function(req, res) {
     });
 });
 
-//password reset
-router.get('/resetPasswordLink/:emailHash', function(req, res) {
-    console.log("Password reset page loaded");
+//password reset link
+router.post('/resetPasswordLink/:hash', function(req, res) {
+    console.log("\nPOST : Password reset link loaded ");
+
     //check if email in database, redir to reset pswd page if successful
     User.findOne({ email: req.body.email }, function(err, user) {
         if (user){
-            //send to custom reset password link page
-            res.render('resetPasswordLink', { title: 'Password Reset Link', customUserLink: 'none'});
-        }
-        else {
-            //else render an error message
-            res.render('resetPasswordHome', { title: 'Dashboard', error: 'Email does not exist'});
+        	//compare hash to email
+            bcrypt.compare(req.body.email, req.params.hash, function(err, hashresult) {
+                if(hashresult) {
+
+                    res.render('resetPasswordForm',
+						{ title: 'Password Reset Link',
+							email:req.body.email});
+                } else {
+                    res.redirect("/");
+                }
+            });
+        } else {
+            res.render('resetPasswordHome', { title: 'Dashboard', error: 'Invalid link'});
+		}
+    });
+
+
+});
+
+//password reset form
+router.post('/resetPasswordConfirm', function(req, res) {
+	console.log(req.body);
+
+    User.findOne({ email: req.body.email }, function(err, user) {
+        if (user){
+			//save user w/ new password, hashed
+			user.password = req.body.newPassword;
+			user.save(function(err, newBoard){
+                if(err){
+                    console.log(err);
+                } else {
+                    res.render('index', { title: 'Prello', error:'Password reset successfully'});
+                }
+            });
+        } else {
+            res.redirect("/");
         }
     });
 });
