@@ -7,19 +7,27 @@ var User = require('../models/user');
 var router = express.Router();
 
 /* GET users listing. */
-/* router.get('/', function(req, res) {
-  res.send('literally nothing to see here');
-}); */
+router.get('/', function(req, res) {
+    User.find({}, function (err, users) {
+        if (err) return console.error(err);
+        res.json(users);
+    });
+});
 
 //create new user
 router.post('/', function(req, res) { 
 	var newUser = new User(
-		req.body //{title: req.body.title}
-		// {"username" : req.body.username,
-        // "email": req.body.email,
-        // "password": "",
-        // "boardIDs": [] }
+		// req.body //{title: req.body.title}
+		{
+		    "username" : req.body.username,
+            "email": req.body.email,
+            "password": req.body.password,
+            "boardIDs": [],
+            "token" : null //User.generateUniqueToken(req.body.email)
+		}
 	);
+
+	//password will be before saving hashed here
 	newUser.save(function(err, user){
 		if(err){
 			console.log(err);
@@ -44,7 +52,6 @@ router.post('/confirm', function(req, res) {
 
 				if (isMatch){
                     req.session.user = user;
-                    //res.render('prelloDashboard', { title: 'DashBoard', error: ""});
                     res.redirect('/board/dashboard');
 				}else {
                     res.render('index', {title: 'Prello',
@@ -56,35 +63,26 @@ router.post('/confirm', function(req, res) {
 	});
 });
 
-//password reset
+//password reset request
 router.post('/resetPasswordHome', function(req, res) {
-	console.log("POST : Password reset page loaded");
 	//check if email in database, redir to reset pswd page if successful
     User.findOne({ email: req.body.email }, function(err, user) {
 	if (user){
 
-        // generate a salt
-        bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-            if (err)
-            	res.render('resetPasswordHome', {title:'Dashboard', error:'error w/ generating salt'});
+        //set token for users that want to reset pswd
+        user.token = User.generateUniqueToken(req.body.email);
 
-            // hash the email using our new salt, gets new one each time
-            bcrypt.hash(user.email, salt, function(err, hash) {
-                if (err)
-                    res.render('resetPasswordHome', {title:'Dashboard', error:'error w/ generating hash'});
-
-                console.log("new hash link is: " + hash);
-                //send to custom reset password link page
+        user.save(function(err, user){
+            if(err){
+                console.log(err);
+            } else {
                 res.render('resetPasswordLink',
-					{
-						title: 'Password Reset Link',
-						email: user.email,
-						customUserLink: '/users/resetPasswordLink/' + hash
-					});
-
-            });
+                    {
+                        title: 'Password Reset Link',
+                        customUserLink: '/users/resetPasswordLink/' + user.token
+                    });
+            }
         });
-
 	}
 	else {
 		//else render an error message
@@ -94,23 +92,11 @@ router.post('/resetPasswordHome', function(req, res) {
 });
 
 //password reset link
-router.post('/resetPasswordLink/:hash', function(req, res) {
-    console.log("\nPOST : Password reset link loaded ");
-
-    //check if email in database, redir to reset pswd page if successful
-    User.findOne({ email: req.body.email }, function(err, user) {
+router.post('/resetPasswordLink/:token', function(req, res) {
+    //check if token in database, redir to reset pswd page if successful
+    User.findOne({ token: req.params.token }, function(err, user) {
         if (user){
-        	//compare hash to email
-            bcrypt.compare(req.body.email, req.params.hash, function(err, hashresult) {
-                if(hashresult) {
-
-                    res.render('resetPasswordForm',
-						{ title: 'Password Reset Link',
-							email:req.body.email});
-                } else {
-                    res.redirect("/");
-                }
-            });
+            res.render('resetPasswordForm', {title: 'Password Reset Link', token: user.token});
         } else {
             res.render('resetPasswordHome', { title: 'Dashboard', error: 'Invalid link'});
 		}
@@ -121,10 +107,11 @@ router.post('/resetPasswordLink/:hash', function(req, res) {
 
 //password reset form
 router.post('/resetPasswordConfirm', function(req, res) {
-	console.log(req.body);
-
-    User.findOne({ email: req.body.email }, function(err, user) {
+    User.findOne({ token: req.body.token }, function(err, user) {
         if (user){
+            //invalidate the token link
+            user.token = null;
+
 			//save user w/ new password, hashed
 			user.password = req.body.newPassword;
 			user.save(function(err, newBoard){
@@ -138,6 +125,20 @@ router.post('/resetPasswordConfirm', function(req, res) {
             res.redirect("/");
         }
     });
+});
+
+//delete user
+router.delete('/:userID', function(req, res) {
+    User.findOne({_id: req.params.userID}, function (err, user) {
+        if (err)
+            return console.error(err);
+        if (user == null){
+            res.end();
+            return;
+        }
+        user.remove();
+    });
+    res.end();
 });
 
 // //user logout

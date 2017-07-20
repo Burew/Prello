@@ -7,7 +7,8 @@ var UserSchema = new Schema({
     username: String,
     email: String,
     password: String,
-    boardIDs: Array
+    boardIDs: Array,
+    token: String
 });
 
 UserSchema.pre('save', function(next) {
@@ -31,18 +32,16 @@ UserSchema.pre('save', function(next) {
     });
 });
 
-UserSchema.methods.comparePassword = function(candidatePassword, cb) {
-    bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+UserSchema.methods.comparePassword = function(testPassword, cb) {
+    bcrypt.compare(testPassword, this.password, function(err, isMatch) {
         if (err) return cb(err);
         cb(null, isMatch);
     });
 };
 
-// var User = mongoose.model('User', { //model the list
-// 	username: String,
-// 	email: String,
-// 	password: String,
-// 	boardIDs: Array
-// });
+UserSchema.statics.generateUniqueToken = function(emailString){
+    //make this synchronous, or else it can be instantiated to nothing
+    return bcrypt.hashSync(emailString + Date.now(), SALT_WORK_FACTOR);
+};
 
 module.exports = mongoose.model('User', UserSchema);
